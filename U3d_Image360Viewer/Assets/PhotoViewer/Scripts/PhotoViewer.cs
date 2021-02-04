@@ -8,37 +8,112 @@ namespace PhotoViewer.Scripts
 {
     public class PhotoViewer : MonoBehaviour
     {
-        [SerializeField] private Image _photoImage;
+        // [SerializeField] private Image _photoImage;
         [SerializeField] private RawImage _panoramaRawImage;
         [SerializeField] private PanoramaView _panoramaView;
+        [SerializeField] private PhotoView _photoView;
         [SerializeField] private GameObject _btnNext;
         [SerializeField] private GameObject _btnPrev;
         [SerializeField] private Sprite _imageDefault;
-        [SerializeField] private Text  _imageName;
-        public string[] photoDates { get; set; }
+        [SerializeField] private Text _imageName;
 
-        private int tempCount = 0;
+        private List<ImageData> _images = new List<ImageData>();
+        private int _currentPhoto { get; set; }
 
+        //==============================================================
 
-        public event Action MainBack;
+        public string[] _photoNames { get; set; }
 
-        public void CloseViewer() =>
-            MainBack?.Invoke();
+        public event Action CloseImageViewer;
 
         private Dictionary<string, Sprite> photos = new Dictionary<string, Sprite>();
 
-        private int currentPhoto { get; set; }
 
-        private Image getPhotoImage =>
-            _photoImage.GetComponent<Image>();
-
-        public void SetPhotoDates(string[] dates)
+        public void CloseViewer()
         {
-            photoDates = dates;
-            for (int i = 0; i < photoDates.Length; ++i)
+            Clear();
+            CloseImageViewer?.Invoke();
+
+            gameObject.SetActive(false);
+        }
+
+        public void AddImageData(ImageData data)
+        {
+            _images.Add(data);
+        }
+
+        public void AddImageData(List<ImageData> data) =>
+            _images.AddRange(data);
+
+        public void Clear()
+        {
+            _images.Clear();
+
+            _btnPrev.SetActive(false);
+            _btnNext.SetActive(false);
+            //_panoramaView.Clear();
+            _photoView.ShowImage(_imageDefault);
+            // todo : all parts clear
+
+            // _photoView.Clear
+        }
+
+        public void Show()
+        {
+            gameObject.SetActive(true);
+
+            if (_images != null && _images.Count > 0)
             {
-                photoDates[i] = photoDates[i].Trim();
-                Debug.Log(photoDates[i]);
+                _currentPhoto = 0;
+                ShowImage(_images[0]);
+            }
+            else
+                Clear();
+        }
+
+        private void ShowImage(ImageData imageData)
+        {
+            if (IsPhoto(imageData.Sprite))
+            {
+                _photoView.gameObject.SetActive(true);
+                _panoramaView.gameObject.SetActive(false);
+                
+                _photoView.ShowImage(imageData.Sprite);
+            }
+            else
+            {
+                _photoView.gameObject.SetActive(false);
+                _panoramaView.gameObject.SetActive(true);
+                
+                _panoramaView.ShowImage(imageData.Sprite);
+            }
+        }
+
+        public void NextImage()
+        {
+            _currentPhoto = (++_currentPhoto > _images.Count - 1) ? 0 : _currentPhoto;
+
+            ShowImage(_images[_currentPhoto]);
+        }
+
+        public void PrevPhoto()
+        {
+            _currentPhoto = (_currentPhoto <= 0) ? _images.Count - 1 : _currentPhoto - 1;
+
+            ShowImage(_images[_currentPhoto]);
+        }
+
+        private bool IsPhoto(Sprite sprite) => 
+            sprite.texture.width / sprite.texture.height < 1.6f;
+
+        //========================================================================================================
+        public void SetNames(string[] names)
+        {
+            _photoNames = names;
+            for (int i = 0; i < _photoNames.Length; ++i)
+            {
+                _photoNames[i] = _photoNames[i].Trim();
+                Debug.Log(_photoNames[i]);
             }
         }
 
@@ -57,9 +132,9 @@ namespace PhotoViewer.Scripts
             Debug.Log("photos update");
             if (photos.Count == 0)
             {
-                getPhotoImage.sprite = _imageDefault;
-                _imageName.text = "";
-                RescalePhoto();
+                // GetPhotoImage.sprite = _imageDefault;
+                // _imageName.text = "";
+                // RescalePhoto();
             }
             else
                 ShowPhoto(0);
@@ -68,20 +143,6 @@ namespace PhotoViewer.Scripts
             _btnPrev.SetActive(photos.Count > 1);
         }
 
-        public void NextPhoto()
-        {
-            if (photos.Count > 0)
-                ShowPhoto((currentPhoto + 1) % photos.Count);
-        }
-
-        public void PrevPhoto()
-        {
-            if (photos.Count > 0)
-                ShowPhoto(currentPhoto == 0 ? photos.Count - 1 : (currentPhoto - 1) % photos.Count);
-        }
-
-        public void Clear() =>
-            photos.Clear();
 
         public void OnTextureLoaded(Texture2D texture, string fileName)
         {
@@ -92,70 +153,46 @@ namespace PhotoViewer.Scripts
         }
 
 
-        public void LoadImage(string fileName)
-        {
-            TextureLoader textureLoader = new TextureLoader();
-            textureLoader.LoadData(fileName, OnTextureLoaded, OnTextureLoadError);
-        }
+        // public void LoadImage(string fileName)
+        // {
+        //     TextureLoader textureLoader = new TextureLoader();
+        //     textureLoader.LoadData(fileName, OnTextureLoaded, OnTextureLoadError);
+        // }
 
         private void ShowPhoto(int n)
         {
-            currentPhoto = n;
+            _currentPhoto = n;
             List<KeyValuePair<string, Sprite>> list = new List<KeyValuePair<string, Sprite>>(photos);
-
-            bool isPhoto = tempCount++ % 2 == 0;
 
             Sprite sprite = list[n].Value;
 
             if (IsPhoto(sprite))
             {
-                _photoImage.gameObject.SetActive(true);
-                _panoramaView.gameObject.SetActive(false);
-                getPhotoImage.sprite = sprite;
-                RescalePhoto();
+                // _photoImage.gameObject.SetActive(true);
+                // _panoramaView.gameObject.SetActive(false);
+                // GetPhotoImage.sprite = sprite;
+                // RescalePhoto();
             }
             else // Panorama
             {
-                _photoImage.gameObject.SetActive(false);
-                _panoramaView.gameObject.SetActive(true);
-                _panoramaView.ApplyPicture(sprite);
-
-                _panoramaView.LeanIcon();
-
-                RescalePanorama();
+                //    _photoImage.gameObject.SetActive(false);
+              //  _panoramaView.gameObject.SetActive(true);
+              //  _panoramaView.ShowImage(sprite);
+//
+              //  _panoramaView.LeanIcon();
+//
+              //  RescalePanorama();
             }
 
             var dt = DateTime.Parse(list[n].Key);
             _imageName.text = dt.ToString("dd MMMM yyyy", new CultureInfo("ru-RU")).ToLower();
         }
 
-        private void RescalePhoto()
-        {
-            var s = getPhotoImage.sprite;
-            float scale = Mathf.Min(1024.0f / s.texture.width, 1024.0f / s.texture.height);
 
-            float aspect = 1.0f * s.texture.width / s.texture.height;
-
-            GetComponent<RectTransform>().sizeDelta = new Vector2(scale * s.texture.width, scale * s.texture.height);
-
-            Debug.Log(aspect + " " + s.texture.width + " " + s.texture.height);
-        }
-
-        private void RescalePanorama()
-        {
-            GetComponent<RectTransform>().sizeDelta = new Vector2(1024, 768);
-        }
+        
 
         private void OnTextureLoadError()
         {
-        }
-
-        private bool IsPhoto(Sprite sprite)
-        {
-            if (sprite.texture.width / sprite.texture.height > 1.6f)
-                return false;
-
-            return true;
         }
     }
 }

@@ -45,6 +45,19 @@ namespace PhotoViewer.Scripts
             SetRotateSpeed();
         }
 
+        public void ShowImage(Sprite sprite)
+        {
+            this.sprite = sprite;
+            material.mainTexture = sprite.TextureFromSprite();
+
+            RescalePanorama();
+        }
+        
+        private void RescalePanorama()
+        {
+            GetComponent<RectTransform>().sizeDelta = new Vector2(1024, 768);
+        }
+//==========================================================================================================
         public void LeanIcon()
         {
             Color c = icon360.color;
@@ -59,12 +72,6 @@ namespace PhotoViewer.Scripts
           //      LeanTween.scale(icon360T, Vector3.one, 0.5f);
           //      LeanTween.move(icon360T, iconPosition, 0.5f);
           //  });
-        }
-
-        public void ApplyPicture(Sprite sprite)
-        {
-            this.sprite = sprite;
-            material.mainTexture = sprite.TextureFromSprite();
         }
 
         private void SetIconPositions()
