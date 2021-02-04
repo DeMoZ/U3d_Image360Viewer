@@ -724,13 +724,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4419c6a0c64442f5b4f1c8b98dc9a5e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _panoramaRawImage: {fileID: 2162031689151127986}
   _panoramaView: {fileID: 4158951896867104229}
   _photoView: {fileID: 6187132651290733224}
   _btnNext: {fileID: 2606391358566567147}
   _btnPrev: {fileID: 2606391359472960952}
   _imageDefault: {fileID: 21300000, guid: c509896ec7961154296f5fa574d9646b, type: 3}
   _imageName: {fileID: 2606391359178018898}
+  _imageDate: {fileID: 1230756734228030604}
 --- !u!1 &2606391359472960952
 GameObject:
   m_ObjectHideFlags: 0
@@ -1124,6 +1124,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 8902720732484719632}
+--- !u!114 &4358227421005364384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6054876833505112606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 8400000, guid: 627201bc274fcf04abf8b3aa87722507, type: 2}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &6565483764520956443
 GameObject:
   m_ObjectHideFlags: 0
@@ -1346,7 +1372,7 @@ PrefabInstance:
     - target: {fileID: 3986124919863059590, guid: 7cf401a870f26da41928af3780dafd12,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 12.5
       objectReference: {fileID: 0}
     - target: {fileID: 3986124919863059590, guid: 7cf401a870f26da41928af3780dafd12,
         type: 3}
@@ -1356,7 +1382,7 @@ PrefabInstance:
     - target: {fileID: 3986124919863059590, guid: 7cf401a870f26da41928af3780dafd12,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -125
       objectReference: {fileID: 0}
     - target: {fileID: 3986124919863059590, guid: 7cf401a870f26da41928af3780dafd12,
         type: 3}
@@ -1393,8 +1419,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Panorama
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4708575277574914081, guid: 7cf401a870f26da41928af3780dafd12, type: 3}
+    - {fileID: 2388454433680936574, guid: 7cf401a870f26da41928af3780dafd12, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7cf401a870f26da41928af3780dafd12, type: 3}
+--- !u!1 &6054876833505112606 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7720107217565752786, guid: 7cf401a870f26da41928af3780dafd12,
+    type: 3}
+  m_PrefabInstance: {fileID: 4549879149438693324}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4158951896867104229 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 473997598643751465, guid: 7cf401a870f26da41928af3780dafd12,
@@ -1405,18 +1439,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 282d1c1dd856425b814729c79b38d1ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2162031689151127986 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2388454433680936574, guid: 7cf401a870f26da41928af3780dafd12,
-    type: 3}
-  m_PrefabInstance: {fileID: 4549879149438693324}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &609645680481979210 stripped
