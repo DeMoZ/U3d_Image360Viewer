@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,13 +20,6 @@ namespace PhotoViewer.Scripts
 
 
         public event Action CloseImageViewer;
-
-        //==============================================================
-
-
-       // private Dictionary<string, Sprite> photos = new Dictionary<string, Sprite>();
-
-       
 
         public void CloseViewer()
         {
@@ -51,11 +43,9 @@ namespace PhotoViewer.Scripts
 
             _btnPrev.SetActive(false);
             _btnNext.SetActive(false);
-            //_panoramaView.Clear();
+            _panoramaView.Clear();
+            _photoView.Clear();
             _photoView.ShowImage(_imageDefault);
-            // todo : all parts clear
-
-            // _photoView.Clear
         }
 
         public void Show()
@@ -66,9 +56,6 @@ namespace PhotoViewer.Scripts
             {
                 _currentPhoto = 0;
                 ShowImage(_images[0]);
-
-                //var next  = _btnNext.GetComponent<Routines>();
-               // next.LerpFloat(0,10,callbackOnLerp: (x) => { });
             }
             else
                 Clear();

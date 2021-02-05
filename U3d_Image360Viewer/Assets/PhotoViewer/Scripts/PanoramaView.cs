@@ -50,13 +50,14 @@ namespace PhotoViewer.Scripts
             this.sprite = sprite;
             material.mainTexture = sprite.TextureFromSprite();
 
-            RescalePanorama();
+            // RescalePanorama();
         }
-        
+
         private void RescalePanorama()
         {
             GetComponent<RectTransform>().sizeDelta = new Vector2(1024, 768);
         }
+
 //==========================================================================================================
         public void LeanIcon()
         {
@@ -67,11 +68,11 @@ namespace PhotoViewer.Scripts
 
             icon360T.anchoredPosition = iconPositionCenter;
 
-          //  LeanTween.alpha(icon360T, 0.5f, 0.3f).setOnComplete(() =>
-          //  {
-          //      LeanTween.scale(icon360T, Vector3.one, 0.5f);
-          //      LeanTween.move(icon360T, iconPosition, 0.5f);
-          //  });
+            //  LeanTween.alpha(icon360T, 0.5f, 0.3f).setOnComplete(() =>
+            //  {
+            //      LeanTween.scale(icon360T, Vector3.one, 0.5f);
+            //      LeanTween.move(icon360T, iconPosition, 0.5f);
+            //  });
         }
 
         private void SetIconPositions()
@@ -126,5 +127,10 @@ namespace PhotoViewer.Scripts
 
         private void OnDestroy() =>
             OnRotate -= sphere.OnRotate;
+
+        public void Clear()
+        {
+            // throw new NotImplementedException();
+        }
     }
 }
