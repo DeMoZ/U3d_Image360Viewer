@@ -27,6 +27,7 @@ namespace PhotoViewer.Scripts
 
        // private Dictionary<string, Sprite> photos = new Dictionary<string, Sprite>();
 
+       
 
         public void CloseViewer()
         {
@@ -65,6 +66,9 @@ namespace PhotoViewer.Scripts
             {
                 _currentPhoto = 0;
                 ShowImage(_images[0]);
+
+                //var next  = _btnNext.GetComponent<Routines>();
+               // next.LerpFloat(0,10,callbackOnLerp: (x) => { });
             }
             else
                 Clear();
@@ -100,7 +104,7 @@ namespace PhotoViewer.Scripts
             ShowImage(_images[_currentPhoto]);
         }
 
-        public void PrevPhoto()
+        public void PrevImage()
         {
             _currentPhoto = (_currentPhoto <= 0) ? _images.Count - 1 : _currentPhoto - 1;
 
