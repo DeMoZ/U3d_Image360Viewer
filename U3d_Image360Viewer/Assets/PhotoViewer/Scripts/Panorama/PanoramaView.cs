@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts
 {
-    public class PanoramaView : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+    public class PanoramaView : MonoBehaviour,IPhotoView, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
         [SerializeField] private GameObject panoramaCameraPrefab;
         [SerializeField] private PanoramaRotator panoramaSpherePrefab;
@@ -127,6 +127,11 @@ namespace PhotoViewer.Scripts
 
         private void OnDestroy() =>
             OnRotate -= sphere.OnRotate;
+
+        public void Zoom(float value)
+        {
+            throw new NotImplementedException();
+        }
 
         public void Clear()
         {

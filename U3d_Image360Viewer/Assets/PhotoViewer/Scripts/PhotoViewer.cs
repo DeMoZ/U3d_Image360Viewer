@@ -14,12 +14,17 @@ namespace PhotoViewer.Scripts
         [SerializeField] private Sprite _imageDefault;
         [SerializeField] private Text _imageName;
         [SerializeField] private Text _imageDate;
+        [SerializeField] private Slider _zoomSlider;
 
         private List<ImageData> _images = new List<ImageData>();
         private int _currentPhoto { get; set; }
 
+        private IPhotoView _currentView;
 
         public event Action CloseImageViewer;
+
+        private void Start() => 
+            _zoomSlider.onValueChanged.AddListener(Zoom);
 
         public void CloseViewer()
         {
@@ -29,10 +34,8 @@ namespace PhotoViewer.Scripts
             gameObject.SetActive(false);
         }
 
-        public void AddImageData(ImageData data)
-        {
+        public void AddImageData(ImageData data) => 
             _images.Add(data);
-        }
 
         public void AddImageData(List<ImageData> data) =>
             _images.AddRange(data);
@@ -46,6 +49,7 @@ namespace PhotoViewer.Scripts
             _panoramaView.Clear();
             _photoView.Clear();
             _photoView.ShowImage(_imageDefault);
+            ResetZoom();
         }
 
         public void Show()
@@ -59,29 +63,6 @@ namespace PhotoViewer.Scripts
             }
             else
                 Clear();
-        }
-
-        private void ShowImage(ImageData imageData)
-        {
-            _imageName.text = imageData.Name;
-            _imageDate.text = imageData.Date;
-            // var dt = DateTime.Parse(list[n].Key);
-            // _imageName.text = dt.ToString("dd MMMM yyyy", new CultureInfo("ru-RU")).ToLower();
-            
-            if (IsPhoto(imageData.Sprite))
-            {
-                _photoView.gameObject.SetActive(true);
-                _panoramaView.gameObject.SetActive(false);
-
-                _photoView.ShowImage(imageData.Sprite);
-            }
-            else
-            {
-                _photoView.gameObject.SetActive(false);
-                _panoramaView.gameObject.SetActive(true);
-
-                _panoramaView.ShowImage(imageData.Sprite);
-            }
         }
 
         public void NextImage()
@@ -98,11 +79,54 @@ namespace PhotoViewer.Scripts
             ShowImage(_images[_currentPhoto]);
         }
 
+        private void ResetZoom()
+        {
+            _zoomSlider.onValueChanged.RemoveListener(Zoom);
+            _zoomSlider.value = 0;
+            _zoomSlider.onValueChanged.AddListener(Zoom);
+        }
+
+        private void Zoom(float value) => 
+            _currentView?.Zoom(_zoomSlider.value);
+
+        private void ShowImage(ImageData imageData)
+        {
+            ResetZoom();
+
+            _imageName.text = imageData.Name;
+            _imageDate.text = imageData.Date;
+            // var dt = DateTime.Parse(list[n].Key);
+            // _imageName.text = dt.ToString("dd MMMM yyyy", new CultureInfo("ru-RU")).ToLower();
+
+            if (IsPhoto(imageData.Sprite))
+            {
+                _photoView.gameObject.SetActive(true);
+                _panoramaView.gameObject.SetActive(false);
+
+                _currentView = _photoView;
+                    
+                _photoView.ShowImage(imageData.Sprite);
+            }
+            else
+            {
+                _photoView.gameObject.SetActive(false);
+                _panoramaView.gameObject.SetActive(true);
+
+                _currentView = _panoramaView;
+                
+                _panoramaView.ShowImage(imageData.Sprite);
+            }
+            
+        }
+
         private bool IsPhoto(Sprite sprite) =>
             sprite.texture.width / sprite.texture.height < 1.6f;
 
+        private void OnDestroy() => 
+            _zoomSlider.onValueChanged.RemoveAllListeners();
+
         //========================================================================================================
-        
+
         public void SwitchOnOff(float to, float time)
         {
             if (to != 0) gameObject.SetActive(true);
@@ -112,43 +136,35 @@ namespace PhotoViewer.Scripts
             //     if (to == 0) gameObject.SetActive(false);
             // });
         }
-    
 
 
-     
-
-
-    
-
-       // private void ShowPhoto(int n)
-       // {
-       //     _currentPhoto = n;
-       //     List<KeyValuePair<string, Sprite>> list = new List<KeyValuePair<string, Sprite>>(photos);
+        // private void ShowPhoto(int n)
+        // {
+        //     _currentPhoto = n;
+        //     List<KeyValuePair<string, Sprite>> list = new List<KeyValuePair<string, Sprite>>(photos);
 //
-       //     Sprite sprite = list[n].Value;
+        //     Sprite sprite = list[n].Value;
 //
-       //     if (IsPhoto(sprite))
-       //     {
-       //         // _photoImage.gameObject.SetActive(true);
-       //         // _panoramaView.gameObject.SetActive(false);
-       //         // GetPhotoImage.sprite = sprite;
-       //         // RescalePhoto();
-       //     }
-       //     else // Panorama
-       //     {
-       //         //    _photoImage.gameObject.SetActive(false);
-       //         //  _panoramaView.gameObject.SetActive(true);
-       //         //  _panoramaView.ShowImage(sprite);
+        //     if (IsPhoto(sprite))
+        //     {
+        //         // _photoImage.gameObject.SetActive(true);
+        //         // _panoramaView.gameObject.SetActive(false);
+        //         // GetPhotoImage.sprite = sprite;
+        //         // RescalePhoto();
+        //     }
+        //     else // Panorama
+        //     {
+        //         //    _photoImage.gameObject.SetActive(false);
+        //         //  _panoramaView.gameObject.SetActive(true);
+        //         //  _panoramaView.ShowImage(sprite);
 ////
-       //         //  _panoramaView.LeanIcon();
+        //         //  _panoramaView.LeanIcon();
 ////
-       //         //  RescalePanorama();
-       //     }
+        //         //  RescalePanorama();
+        //     }
 //
-       //     var dt = DateTime.Parse(list[n].Key);
-       //     _imageName.text = dt.ToString("dd MMMM yyyy", new CultureInfo("ru-RU")).ToLower();
-       // }
-
-
+        //     var dt = DateTime.Parse(list[n].Key);
+        //     _imageName.text = dt.ToString("dd MMMM yyyy", new CultureInfo("ru-RU")).ToLower();
+        // }
     }
 }
