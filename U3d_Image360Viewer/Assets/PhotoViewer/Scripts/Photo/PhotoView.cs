@@ -1,15 +1,13 @@
-using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace PhotoViewer.Scripts
+namespace PhotoViewer.Scripts.Photo
 {
     public class PhotoView : MonoBehaviour, IPhotoView //, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
         [SerializeField] private Image _image;
         [SerializeField] private PhotoMap _photoMap;
-        
+
         private RectTransform _transform;
         private RectTransform _imageTransform;
         private Vector2? _defaultImageSize;
@@ -22,10 +20,12 @@ namespace PhotoViewer.Scripts
 
         public void ShowImage(Sprite sprite)
         {
+            Clear();
             _image.sprite = sprite;
             _photoMap.Clear();
             RescalePhoto(sprite);
-            _photoMap.SetMap(_imageTransform.sizeDelta,_transform.sizeDelta);
+            _photoMap.SetMap(_imageTransform.sizeDelta,
+                _transform.parent.GetComponent<RectTransform>().sizeDelta + _transform.sizeDelta);
         }
 
         public void Zoom(float value)
@@ -34,7 +34,20 @@ namespace PhotoViewer.Scripts
                 return;
 
             _imageTransform.sizeDelta = (Vector2) (_defaultImageSize + _defaultImageSize * value * 10);
-            _photoMap.SetMap(_imageTransform.sizeDelta,_transform.sizeDelta);
+            _photoMap.SetMap(_imageTransform.sizeDelta,
+                _transform.parent.GetComponent<RectTransform>().sizeDelta + _transform.sizeDelta);
+        }
+
+        public void RotateLeft()
+        {
+              var euler = _imageTransform.rotation.eulerAngles;
+              _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, euler.z + 90);
+        }
+
+        public void RotateRigth()
+        {
+            var euler = _imageTransform.rotation.eulerAngles;
+            _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, euler.z - 90);
         }
 
         private void RescalePhoto(Sprite sprite)
@@ -62,7 +75,8 @@ namespace PhotoViewer.Scripts
 
         public void Clear()
         {
-            //  throw new NotImplementedException();
+            var euler = _imageTransform.rotation.eulerAngles;
+            _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, 0);
         }
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace PhotoViewer.Scripts
+namespace PhotoViewer.Scripts.Panorama
 {
     public class PanoramaRotator : MonoBehaviour
     {

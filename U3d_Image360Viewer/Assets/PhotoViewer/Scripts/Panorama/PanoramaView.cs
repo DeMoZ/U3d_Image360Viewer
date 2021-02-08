@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace PhotoViewer.Scripts
+namespace PhotoViewer.Scripts.Panorama
 {
     public class PanoramaView : MonoBehaviour,IPhotoView, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
