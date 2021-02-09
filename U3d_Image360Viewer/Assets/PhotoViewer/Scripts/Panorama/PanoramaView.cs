@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts.Panorama
 {
-    public class PanoramaView : MonoBehaviour,IPhotoView, IDragHandler, IBeginDragHandler, IEndDragHandler
+    public class PanoramaView : MonoBehaviour, IPhotoView //, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
         [SerializeField] private GameObject panoramaCameraPrefab;
         [SerializeField] private PanoramaRotator panoramaSpherePrefab;
         [SerializeField] private Image icon360;
 
-        [SerializeField] private float rotationSpeedMobile = 5f;
-        [SerializeField] private float rotationSpeedOther = 25f;
-        [SerializeField] private Direction rotateDirection = Direction.Horizontal;
+        // [SerializeField] private float rotationSpeedMobile = 5f;
+        // [SerializeField] private float rotationSpeedOther = 25f;
+        // [SerializeField] private Direction rotateDirection = Direction.Horizontal;
 
         public Sprite sprite { get; set; }
 
@@ -42,7 +42,7 @@ namespace PhotoViewer.Scripts.Panorama
             icon360T = icon360.GetComponent<RectTransform>();
             SetIconPositions();
             InstantiateObjects();
-            SetRotateSpeed();
+            // SetRotateSpeed();
         }
 
         public void ShowImage(Sprite sprite)
@@ -53,12 +53,18 @@ namespace PhotoViewer.Scripts.Panorama
             // RescalePanorama();
         }
 
+        public void ApplyInput(Vector2 deltaPosition)
+        {
+            OnRotate?.Invoke(deltaPosition.x);
+        }
+
         private void RescalePanorama()
         {
             GetComponent<RectTransform>().sizeDelta = new Vector2(1024, 768);
         }
 
-//==========================================================================================================
+        //==========================================================================================================
+
         public void LeanIcon()
         {
             Color c = icon360.color;
@@ -96,37 +102,9 @@ namespace PhotoViewer.Scripts.Panorama
             OnRotate += sphere.OnRotate;
         }
 
-        private void SetRotateSpeed()
-        {
-#if UNITY_IOS || UNITY_ANDROID
-            rotationSpeed = rotationSpeedMobile;
-#else
-            rotationSpeed = rotationSpeedOther;
-#endif
-        }
-
-        public void OnBeginDrag(PointerEventData eventData)
-        {
-            beginDragDirection = Mathf.Abs(eventData.delta.x) > Mathf.Abs(eventData.delta.y)
-                ? Direction.Horizontal
-                : Direction.Vertical;
-
-            if (beginDragDirection != rotateDirection)
-                return;
-        }
-
-        public void OnDrag(PointerEventData eventData)
-        {
-            Vector2 deltaPosition = eventData.delta * Time.deltaTime * rotationSpeed;
-            OnRotate?.Invoke(deltaPosition.x);
-        }
-
-        public void OnEndDrag(PointerEventData eventData)
-        {
-        }
-
         private void OnDestroy() =>
             OnRotate -= sphere.OnRotate;
+
 
         public void Zoom(float value)
         {

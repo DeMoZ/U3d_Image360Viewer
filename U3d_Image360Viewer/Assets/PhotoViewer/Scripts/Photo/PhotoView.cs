@@ -3,14 +3,25 @@ using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts.Photo
 {
-    public class PhotoView : MonoBehaviour, IPhotoView //, IDragHandler, IBeginDragHandler, IEndDragHandler
+    public class PhotoView : MonoBehaviour, IPhotoView
     {
         [SerializeField] private Image _image;
         [SerializeField] private PhotoMap _photoMap;
 
         private RectTransform _transform;
+
         private RectTransform _imageTransform;
+
         private Vector2? _defaultImageSize;
+
+        private Vector2 ViewerSize
+        {
+            get
+            {
+                var rect = _transform.rect;
+                return new Vector2(rect.width, rect.height);
+            }
+        }
 
         private void Awake()
         {
@@ -40,8 +51,8 @@ namespace PhotoViewer.Scripts.Photo
 
         public void RotateLeft()
         {
-              var euler = _imageTransform.rotation.eulerAngles;
-              _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, euler.z + 90);
+            var euler = _imageTransform.rotation.eulerAngles;
+            _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, euler.z + 90);
         }
 
         public void RotateRigth()
@@ -50,10 +61,44 @@ namespace PhotoViewer.Scripts.Photo
             _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, euler.z - 90);
         }
 
+        public void ApplyInput(Vector2 deltaPosition)
+        {
+            Vector2 newPosition = (Vector2) _imageTransform.position + deltaPosition;
+
+            if (_imageTransform.sizeDelta.x > ViewerSize.x)
+            {
+                if (newPosition.x > 0)
+                {
+                }
+
+                if (newPosition.x < 0)
+                {
+                }
+            }
+
+            if (_imageTransform.sizeDelta.y > ViewerSize.y)
+            {
+                if (newPosition.y > 0)
+                {
+                }
+
+                if (newPosition.y < 0)
+                {
+                }
+            }
+
+            _imageTransform.position = newPosition;
+        }
+
+        public void Clear()
+        {
+            var euler = _imageTransform.rotation.eulerAngles;
+            _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, 0);
+        }
+
         private void RescalePhoto(Sprite sprite)
         {
-            var rect = _transform.rect;
-            Vector2 viewerSize = new Vector2(rect.width, rect.height);
+            Vector2 viewerSize = ViewerSize;
             Vector2 spriteSize = new Vector2(sprite.rect.width, sprite.rect.height);
 
             float viewerAspect = viewerSize.x / viewerSize.y;
@@ -71,12 +116,6 @@ namespace PhotoViewer.Scripts.Photo
             }
 
             _defaultImageSize = _imageTransform.sizeDelta;
-        }
-
-        public void Clear()
-        {
-            var euler = _imageTransform.rotation.eulerAngles;
-            _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, 0);
         }
     }
 }
