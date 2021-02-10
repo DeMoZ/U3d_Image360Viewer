@@ -511,29 +511,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _photoViewer: {fileID: 1490947936}
   _imageLibrary: {fileID: 11400000, guid: 4f410575de4121b4082c9cfc3a94e5c5, type: 2}
---- !u!1 &1295659104 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4440295952033767669, guid: 112dcd67743aa6a4dba0a22ac50a4335,
-    type: 3}
-  m_PrefabInstance: {fileID: 4358227421005364381}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1295659109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1295659104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 852f8e03fe82438aa1494da22e6ffe0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speedMobile: 5
-  _speedOther: 25
-  _speed: 0
-  _dumping: 0
-  _deltaPosition: {x: 0, y: 0}
 --- !u!114 &1490947936 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3045583192945627958, guid: 112dcd67743aa6a4dba0a22ac50a4335,

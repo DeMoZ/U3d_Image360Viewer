@@ -23,6 +23,23 @@ namespace PhotoViewer.Scripts.Photo
             }
         }
 
+        private Vector2 ImageSize
+        {
+            get
+            {
+                var rect = _imageTransform.rect;
+                var angle = (int) _imageTransform.rotation.eulerAngles.z;
+                Vector2 result;
+
+                if (angle == 0 || angle == 180) 
+                    result = new Vector2(rect.width, rect.height);
+                else 
+                    result = new Vector2(rect.height, rect.width);
+
+                return result;
+            }
+        }
+
         private void Awake()
         {
             _transform = GetComponent<RectTransform>();
@@ -63,31 +80,35 @@ namespace PhotoViewer.Scripts.Photo
 
         public void ApplyInput(Vector2 deltaPosition)
         {
-            Vector2 newPosition = (Vector2) _imageTransform.position + deltaPosition;
+            Vector2 newPosition = _imageTransform.localPosition;
 
-            if (_imageTransform.sizeDelta.x > ViewerSize.x)
+            if (ImageSize.x > ViewerSize.x)
             {
-                if (newPosition.x > 0)
-                {
-                }
+                newPosition.x += deltaPosition.x;
 
-                if (newPosition.x < 0)
-                {
-                }
+                if ((newPosition.x - ImageSize.x / 2) > -ViewerSize.x / 2)
+                    newPosition.x = -ViewerSize.x / 2 + ImageSize.x / 2;
+
+                if ((newPosition.x + ImageSize.x / 2) < ViewerSize.x / 2)
+                    newPosition.x = ViewerSize.x / 2 - ImageSize.x / 2;
             }
+            else
+                newPosition.x = 0;
 
-            if (_imageTransform.sizeDelta.y > ViewerSize.y)
+            if (ImageSize.y > ViewerSize.y)
             {
-                if (newPosition.y > 0)
-                {
-                }
+                newPosition.y += deltaPosition.y;
 
-                if (newPosition.y < 0)
-                {
-                }
+                if ((newPosition.y - ImageSize.y / 2) > -ViewerSize.y / 2)
+                    newPosition.y = -ViewerSize.y / 2 + ImageSize.y / 2;
+
+                if ((newPosition.y + ImageSize.y / 2) < ViewerSize.y / 2)
+                    newPosition.y = ViewerSize.y / 2 - ImageSize.y / 2;
             }
+            else
+                newPosition.y = 0;
 
-            _imageTransform.position = newPosition;
+            _imageTransform.localPosition = (Vector3) newPosition;
         }
 
         public void Clear()
@@ -98,20 +119,20 @@ namespace PhotoViewer.Scripts.Photo
 
         private void RescalePhoto(Sprite sprite)
         {
-            Vector2 viewerSize = ViewerSize;
-            Vector2 spriteSize = new Vector2(sprite.rect.width, sprite.rect.height);
+            var viewerSize = ViewerSize;
+            var spriteSize = new Vector2(sprite.rect.width, sprite.rect.height);
 
-            float viewerAspect = viewerSize.x / viewerSize.y;
-            float spriteAspect = spriteSize.x / spriteSize.y;
+            var viewerAspect = viewerSize.x / viewerSize.y;
+            var spriteAspect = spriteSize.x / spriteSize.y;
 
             if (spriteAspect > viewerAspect)
             {
-                float relation = viewerSize.x / sprite.texture.width;
+               var relation = viewerSize.x / sprite.texture.width;
                 _imageTransform.sizeDelta = new Vector2(viewerSize.x, relation * spriteSize.y);
             }
             else
             {
-                float relate = viewerSize.y / sprite.texture.height;
+                var relate = viewerSize.y / sprite.texture.height;
                 _imageTransform.sizeDelta = new Vector2(relate * spriteSize.x, viewerSize.y);
             }
 
