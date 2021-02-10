@@ -172,6 +172,7 @@ GameObject:
   - component: {fileID: 3986124919863059590}
   - component: {fileID: 6842766651438240846}
   - component: {fileID: 473997598643751465}
+  - component: {fileID: 2147102008359769641}
   m_Layer: 5
   m_Name: Panorama
   m_TagString: Untagged
@@ -225,6 +226,18 @@ MonoBehaviour:
   panoramaSpherePrefab: {fileID: -6440284486969605040, guid: afd2a2cd8c1db1f40b3f57f5db8a7022,
     type: 3}
   icon360: {fileID: 6981590248303407072}
-  rotationSpeedMobile: 5
-  rotationSpeedOther: 25
-  rotateDirection: 0
+--- !u!114 &2147102008359769641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9148389812720788895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588a251a81054126a6b62c9916a45d55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dumping: 3
+  _speedMobile: 5
+  _speedOther: 25
