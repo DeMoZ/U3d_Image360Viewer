@@ -31,9 +31,9 @@ namespace PhotoViewer.Scripts.Photo
                 var angle = (int) _imageTransform.rotation.eulerAngles.z;
                 Vector2 result;
 
-                if (angle == 0 || angle == 180) 
+                if (angle == 0 || angle == 180)
                     result = new Vector2(rect.width, rect.height);
-                else 
+                else
                     result = new Vector2(rect.height, rect.width);
 
                 return result;
@@ -52,7 +52,7 @@ namespace PhotoViewer.Scripts.Photo
             _image.sprite = sprite;
             _photoMap.Clear();
             RescalePhoto(sprite);
-            _photoMap.SetMap(_imageTransform.sizeDelta,
+            _photoMap.SetSize(_imageTransform.sizeDelta,
                 _transform.parent.GetComponent<RectTransform>().sizeDelta + _transform.sizeDelta);
         }
 
@@ -62,7 +62,7 @@ namespace PhotoViewer.Scripts.Photo
                 return;
 
             _imageTransform.sizeDelta = (Vector2) (_defaultImageSize + _defaultImageSize * value * 10);
-            _photoMap.SetMap(_imageTransform.sizeDelta,
+            _photoMap.SetSize(_imageTransform.sizeDelta,
                 _transform.parent.GetComponent<RectTransform>().sizeDelta + _transform.sizeDelta);
         }
 
@@ -72,7 +72,7 @@ namespace PhotoViewer.Scripts.Photo
             _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, euler.z + 90);
         }
 
-        public void RotateRigth()
+        public void RotateRight()
         {
             var euler = _imageTransform.rotation.eulerAngles;
             _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, euler.z - 90);
@@ -109,6 +109,8 @@ namespace PhotoViewer.Scripts.Photo
                 newPosition.y = 0;
 
             _imageTransform.localPosition = (Vector3) newPosition;
+
+            _photoMap.SetPosition(newPosition, ImageSize);
         }
 
         public void Clear()
@@ -127,7 +129,7 @@ namespace PhotoViewer.Scripts.Photo
 
             if (spriteAspect > viewerAspect)
             {
-               var relation = viewerSize.x / sprite.texture.width;
+                var relation = viewerSize.x / sprite.texture.width;
                 _imageTransform.sizeDelta = new Vector2(viewerSize.x, relation * spriteSize.y);
             }
             else

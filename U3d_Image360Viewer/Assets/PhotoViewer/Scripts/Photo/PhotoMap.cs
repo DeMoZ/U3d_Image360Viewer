@@ -7,25 +7,24 @@ namespace PhotoViewer.Scripts.Photo
         [SerializeField] private RectTransform _map;
         [SerializeField] private RectTransform _picture;
 
-        // private Vector2 _mapDefaultSize = new Vector2();
-        // private Vector2 _pictureDefaultSize = new Vector2();
-
         private Vector2 _photoMapSize = new Vector2();
 
-        private void Awake()
-        {
+        private void Awake() =>
             _photoMapSize = GetComponent<RectTransform>().sizeDelta;
-            //   _mapDefaultSize = _map.sizeDelta;
-            //   _pictureDefaultSize = _picture.sizeDelta;
-        }
 
         public void Clear()
         {
-            //  _map.sizeDelta = _mapDefaultSize;
-            //  _picture.sizeDelta = _pictureDefaultSize;
         }
 
-        public void SetMap(Vector2 imageSize, Vector2 viewSize)
+        public void SetPosition(Vector2 position, Vector2 imgSize)
+        {
+            var x = -position.x * (_photoMapSize.x / imgSize.x) + _photoMapSize.x / 2;
+            var y = -position.y * (_photoMapSize.y / imgSize.y) + _photoMapSize.y / 2;
+
+            _map.localPosition = new Vector2(x, y);
+        }
+
+        public void SetSize(Vector2 imageSize, Vector2 viewSize)
         {
             var imageMagn = imageSize.magnitude;
             var viewMagn = viewSize.magnitude;
