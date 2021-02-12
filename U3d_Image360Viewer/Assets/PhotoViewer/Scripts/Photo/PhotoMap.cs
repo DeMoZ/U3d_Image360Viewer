@@ -6,17 +6,41 @@ namespace PhotoViewer.Scripts.Photo
     {
         [SerializeField] private RectTransform _map;
         [SerializeField] private RectTransform _picture;
+        private RectTransform _transform;
 
-        private Vector2 _photoMapSize = new Vector2();
+        private Vector2 _photoMapSize
+        {
+            get
+            {
+                Rect rect = _transform.rect;
+                return new Vector2(rect.width, rect.height);
+            }
+        }
 
-        private void Awake() =>
-            _photoMapSize = GetComponent<RectTransform>().sizeDelta;
+        private void Awake()
+        {
+            _transform = GetComponent<RectTransform>();
+            var a = _transform.rect;
+        }
 
         public void Clear()
         {
         }
 
-        public void SetPosition(Vector2 position, Vector2 imgSize)
+        public void SetPosition(Vector2 position, Vector2 imgSize, Vector2 viewSize)
+        {
+            // если картинка больше больше, то иконка вьювера выставляется относительно иконки картинки
+            
+            
+            
+            
+            
+            //  var x = -position.x * (_photoMapSize.x / imgSize.x) + _photoMapSize.x / 2;
+          //  var y = -position.y * (_photoMapSize.y / imgSize.y) + _photoMapSize.y / 2;
+          //  _map.localPosition = new Vector2(x, y);
+        }
+        
+        public void _SetPosition(Vector2 position, Vector2 imgSize)
         {
             var x = -position.x * (_photoMapSize.x / imgSize.x) + _photoMapSize.x / 2;
             var y = -position.y * (_photoMapSize.y / imgSize.y) + _photoMapSize.y / 2;
@@ -29,83 +53,31 @@ namespace PhotoViewer.Scripts.Photo
             var imageMagn = imageSize.magnitude;
             var viewMagn = viewSize.magnitude;
 
-            Debug.Log($"imageSize {imageSize}, viewSize {viewSize}");
-            Debug.Log($"imageMagn {imageMagn}, viewMagn {viewMagn}");
+            var bigSize = (imageMagn > viewMagn) ? imageSize : viewSize;
+            var smallSize = (imageMagn > viewMagn) ? viewSize : imageSize;
 
-            var bigElementSize = (imageMagn > viewMagn) ? imageSize : viewSize;
-            var bigElementRect = (imageMagn > viewMagn) ? _picture : _map;
+            var bigRect = (imageMagn > viewMagn) ? _picture : _map;
 
-            var bigAspect = bigElementSize.x / bigElementSize.y;
-            var mapAspect = _photoMapSize.x / _photoMapSize.y;
+            var relation = bigSize.x / bigSize.y;
 
-            if (bigAspect > mapAspect)
-            {
-                var relation = _photoMapSize.x / bigElementSize.x;
-                bigElementRect.sizeDelta = new Vector2(_photoMapSize.x, relation * bigElementSize.y);
-            }
+            if (bigSize.x > bigSize.y)
+                bigRect.sizeDelta = new Vector2(_photoMapSize.x, _photoMapSize.y / relation);
             else
-            {
-                var relation = _photoMapSize.y / bigElementSize.y;
-                bigElementRect.sizeDelta = new Vector2(relation * bigElementSize.x, _photoMapSize.y);
-            }
+                bigRect.sizeDelta = new Vector2(_photoMapSize.x * relation, _photoMapSize.y);
 
-            InnerPart(bigElementSize, viewSize);
+            InnerPart(bigSize, smallSize, imageMagn > viewMagn);
         }
 
-        public void __SetMap(Vector2 imageSize, Vector2 viewSize)
+        private void InnerPart(Vector2 bigSize, Vector2 smallSize, bool imageBigger)
         {
-            var imageMagn = imageSize.magnitude;
-            var viewMagn = viewSize.magnitude;
+            var relation = Vector2.zero;
+            relation.x = smallSize.x / bigSize.x;
+            relation.y = smallSize.y / bigSize.y;
 
-            Debug.Log($"imageSize {imageSize}, viewSize {viewSize}");
-            Debug.Log($"imageMagn {imageMagn}, viewMagn {viewMagn}");
-
-            var bigElementSize = (imageMagn > viewMagn) ? imageSize : viewSize;
-            var bigElementRect = (imageMagn > viewMagn) ? _picture : _map;
-
-            var bigAspect = bigElementSize.x / bigElementSize.y;
-            var mapAspect = _photoMapSize.x / _photoMapSize.y;
-
-            if (bigAspect > mapAspect)
-            {
-                var relation = _photoMapSize.x / bigElementSize.x;
-                bigElementRect.sizeDelta = new Vector2(_photoMapSize.x, relation * bigElementSize.y);
-            }
+            if (imageBigger)
+                _map.sizeDelta = new Vector2(_picture.sizeDelta.x * relation.x, _picture.sizeDelta.y * relation.y);
             else
-            {
-                var relation = _photoMapSize.y / bigElementSize.y;
-                bigElementRect.sizeDelta = new Vector2(relation * bigElementSize.x, _photoMapSize.y);
-            }
-
-            InnerPart(bigElementSize, viewSize);
-        }
-
-        public void _SetMap(Vector2 imageSize, Vector2 viewSize)
-        {
-            var pictureAspect = imageSize.x / imageSize.y;
-            var mapAspect = _photoMapSize.x / _photoMapSize.y;
-
-            if (pictureAspect > mapAspect)
-            {
-                var relation = _photoMapSize.x / imageSize.x;
-                _picture.sizeDelta = new Vector2(_photoMapSize.x, relation * imageSize.y);
-            }
-            else
-            {
-                var relation = _photoMapSize.y / imageSize.y;
-                _picture.sizeDelta = new Vector2(relation * imageSize.x, _photoMapSize.y);
-            }
-
-            InnerPart(imageSize, viewSize);
-        }
-
-        private void InnerPart(Vector2 imageSize, Vector2 viewSize)
-        {
-            Vector2 relations = new Vector2(viewSize.x / imageSize.x, viewSize.y / imageSize.y);
-
-            _map.sizeDelta = new Vector2(_photoMapSize.x * relations.x, _photoMapSize.y * relations.y);
-
-            //  Debug.Log($"mapsizedelta ({_map.sizeDelta.x},{_map.sizeDelta.y}) ; relations {relations}");
+                _picture.sizeDelta = new Vector2(_map.sizeDelta.x * relation.x, _map.sizeDelta.y * relation.y);
         }
     }
 }

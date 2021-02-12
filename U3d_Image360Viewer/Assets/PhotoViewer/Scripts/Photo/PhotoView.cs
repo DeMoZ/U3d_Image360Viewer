@@ -52,8 +52,7 @@ namespace PhotoViewer.Scripts.Photo
             _image.sprite = sprite;
             _photoMap.Clear();
             RescalePhoto(sprite);
-            _photoMap.SetSize(_imageTransform.sizeDelta,
-                _transform.parent.GetComponent<RectTransform>().sizeDelta + _transform.sizeDelta);
+            _photoMap.SetSize(ImageSize, ViewerSize);
         }
 
         public void Zoom(float value)
@@ -62,8 +61,7 @@ namespace PhotoViewer.Scripts.Photo
                 return;
 
             _imageTransform.sizeDelta = (Vector2) (_defaultImageSize + _defaultImageSize * value * 10);
-            _photoMap.SetSize(_imageTransform.sizeDelta,
-                _transform.parent.GetComponent<RectTransform>().sizeDelta + _transform.sizeDelta);
+            _photoMap.SetSize(ImageSize, ViewerSize);
         }
 
         public void RotateLeft()
@@ -110,7 +108,7 @@ namespace PhotoViewer.Scripts.Photo
 
             _imageTransform.localPosition = (Vector3) newPosition;
 
-            _photoMap.SetPosition(newPosition, ImageSize);
+            _photoMap.SetPosition(newPosition, ImageSize, ViewerSize);
         }
 
         public void Clear()
