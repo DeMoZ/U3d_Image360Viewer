@@ -92,18 +92,18 @@ namespace PhotoViewer.Scripts.Panorama
 
             _icon360T.anchoredPosition = _localCenter;
 
-            _routines.LerpFloat(0, _iconColor.a, 0.3f, false, (a) =>
+            _routines.LerpFloat(0, _iconColor.a, 0.3f, (a) =>
                 {
                     color.a = a;
                     _icon360.color = color;
                 },
                 () =>
                 {
-                    _routines.LerpVector2(_icon360T.anchoredPosition, _iconPosition, 0.5f, false,
+                    _routines.LerpVector2(_icon360T.anchoredPosition, _iconPosition, 0.5f,
                         (vector) => { _icon360T.anchoredPosition = vector; });
-                    
-                   // _routines.LerpVector2(_icon360T.localScale, Vector2.one, 0.5f, false,
-                    //    (vector) => { _icon360T.localScale = vector; });
+
+                    _routines.LerpVector2(_icon360T.localScale, Vector2.one, 0.5f,
+                        (vector) => { _icon360T.localScale = vector; });
                 });
         }
 

@@ -15,7 +15,7 @@ namespace PhotoViewer.Scripts
         [SerializeField] private float _defaultAlpha = 0;
         [SerializeField] private float _hoverAlpha = 0.1f;
         [SerializeField] private float _clickAlpha = 0.2f;
-        
+
         [SerializeField] private float _hoverTime = 0.3f;
         [SerializeField] private float _clickTime = 0.1f;
 
@@ -32,22 +32,20 @@ namespace PhotoViewer.Scripts
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            _routines.LerpFloat(_image.color.a,_clickAlpha,_clickTime, false,SetAlpha, () =>
-            {
-                _routines.LerpFloat(_image.color.a, _hoverAlpha, _clickTime, false, SetAlpha);
-            });
-            
+            _routines.LerpFloat(_image.color.a, _clickAlpha, _clickTime, SetAlpha,
+                () => { _routines.LerpFloat(_image.color.a, _hoverAlpha, _clickTime, SetAlpha); });
+
             OnClick?.Invoke();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _routines.LerpFloat(_image.color.a,_hoverAlpha,_hoverTime, false, SetAlpha);
+            _routines.LerpFloat(_image.color.a, _hoverAlpha, _hoverTime, SetAlpha);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            _routines.LerpFloat(_image.color.a,_defaultAlpha,_hoverTime, false,  SetAlpha);
+            _routines.LerpFloat(_image.color.a, _defaultAlpha, _hoverTime, SetAlpha);
         }
 
         private void SetAlpha(float x)
