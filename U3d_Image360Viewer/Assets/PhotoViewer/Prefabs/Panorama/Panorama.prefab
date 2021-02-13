@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100, y: -120}
+  m_AnchoredPosition: {x: 75, y: -50}
   m_SizeDelta: {x: 100, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6376097218772529613
@@ -173,6 +173,7 @@ GameObject:
   - component: {fileID: 6842766651438240846}
   - component: {fileID: 473997598643751465}
   - component: {fileID: 2147102008359769641}
+  - component: {fileID: 448738114200697325}
   m_Layer: 5
   m_Name: Panorama
   m_TagString: Untagged
@@ -221,11 +222,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282d1c1dd856425b814729c79b38d1ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panoramaCameraPrefab: {fileID: 426894902550343399, guid: ebe78219b2cb2f54387b1e4ef74dec6d,
+  _panoramaCameraPrefab: {fileID: 426894902550343399, guid: ebe78219b2cb2f54387b1e4ef74dec6d,
     type: 3}
-  panoramaSpherePrefab: {fileID: -6440284486969605040, guid: afd2a2cd8c1db1f40b3f57f5db8a7022,
+  _panoramaSpherePrefab: {fileID: -6440284486969605040, guid: afd2a2cd8c1db1f40b3f57f5db8a7022,
     type: 3}
-  icon360: {fileID: 6981590248303407072}
+  _icon360: {fileID: 6981590248303407072}
+  _animateIcon360: 1
 --- !u!114 &2147102008359769641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,3 +243,15 @@ MonoBehaviour:
   _dumping: 3
   _speedMobile: 5
   _speedOther: 25
+--- !u!114 &448738114200697325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9148389812720788895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af02f34ab5f4df1a5cbfb978aa8cdaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
