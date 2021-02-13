@@ -29,25 +29,14 @@ namespace PhotoViewer.Scripts.Photo
 
         public void SetPosition(Vector2 position, Vector2 imgSize, Vector2 viewSize)
         {
-            // если картинка больше больше, то иконка вьювера выставляется относительно иконки картинки
-            
-            
-            
-            
-            
-            //  var x = -position.x * (_photoMapSize.x / imgSize.x) + _photoMapSize.x / 2;
-          //  var y = -position.y * (_photoMapSize.y / imgSize.y) + _photoMapSize.y / 2;
-          //  _map.localPosition = new Vector2(x, y);
+            var newPosition = Vector2.zero;
+            var imgBigSize = (imgSize.x > imgSize.y) ? imgSize.x : imgSize.y;
+            newPosition.x = -position.x * (_photoMapSize.x / imgBigSize)  + _photoMapSize.x / 2;
+            newPosition.y = -position.y * (_photoMapSize.y / imgBigSize) + _photoMapSize.y / 2;
+           
+            _map.localPosition = newPosition;
         }
         
-        public void _SetPosition(Vector2 position, Vector2 imgSize)
-        {
-            var x = -position.x * (_photoMapSize.x / imgSize.x) + _photoMapSize.x / 2;
-            var y = -position.y * (_photoMapSize.y / imgSize.y) + _photoMapSize.y / 2;
-
-            _map.localPosition = new Vector2(x, y);
-        }
-
         public void SetSize(Vector2 imageSize, Vector2 viewSize)
         {
             var imageMagn = imageSize.magnitude;
