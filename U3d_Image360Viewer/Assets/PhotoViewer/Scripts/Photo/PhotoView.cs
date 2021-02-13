@@ -68,12 +68,14 @@ namespace PhotoViewer.Scripts.Photo
         {
             var euler = _imageTransform.rotation.eulerAngles;
             _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, euler.z + 90);
+            _photoMap.SetSize(ImageSize, ViewerSize);
         }
 
         public void RotateRight()
         {
             var euler = _imageTransform.rotation.eulerAngles;
             _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, euler.z - 90);
+            _photoMap.SetSize(ImageSize, ViewerSize);
         }
 
         public void ApplyInput(Vector2 deltaPosition)
