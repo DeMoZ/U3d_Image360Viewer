@@ -81,20 +81,11 @@ namespace PhotoViewer.Scripts
             ShowImage(_images[_currentPhoto]);
         }
 
-        private void ResetZoom()
-        {
-            _zoomSlider.onValueChanged.RemoveListener(Zoom);
-            _zoomSlider.value = 0;
-            _zoomSlider.onValueChanged.AddListener(Zoom);
-        }
-
         private void Zoom(float value) =>
             _currentView?.Zoom(_zoomSlider.value);
 
         private void ShowImage(ImageData imageData)
         {
-            ResetZoom();
-
             _imageName.text = imageData.Name;
             _imageDate.text = imageData.Date;
             // var dt = DateTime.Parse(list[n].Key);
@@ -102,6 +93,7 @@ namespace PhotoViewer.Scripts
 
             if (IsPhoto(imageData.Sprite))
             {
+                ResetZoom();
                 _photoView.gameObject.SetActive(true);
                 _panoramaView.gameObject.SetActive(false);
 
@@ -111,6 +103,7 @@ namespace PhotoViewer.Scripts
             }
             else
             {
+                SetZoom(0.5f);
                 _photoView.gameObject.SetActive(false);
                 _panoramaView.gameObject.SetActive(true);
 
@@ -119,6 +112,16 @@ namespace PhotoViewer.Scripts
                 _panoramaView.ShowImage(imageData.Sprite);
             }
         }
+
+        private void ResetZoom()
+        {
+            _zoomSlider.onValueChanged.RemoveListener(Zoom);
+            _zoomSlider.value = 0;
+            _zoomSlider.onValueChanged.AddListener(Zoom);
+        }
+
+        private void SetZoom(float value) => 
+            _zoomSlider.value = value;
 
         private bool IsPhoto(Sprite sprite) =>
             sprite.texture.width / sprite.texture.height < 1.6f;

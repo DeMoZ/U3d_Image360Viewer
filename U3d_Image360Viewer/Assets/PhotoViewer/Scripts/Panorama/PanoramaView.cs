@@ -24,7 +24,8 @@ namespace PhotoViewer.Scripts.Panorama
 
         private RenderTexture _renderTexture;
         private RectTransform _icon360T;
-        private PanoramaRotator sphere;
+        private PanoramaRotator _sphere;
+        private Camera _camera;
         private Material material;
 
         private float rotationSpeed;
@@ -57,18 +58,21 @@ namespace PhotoViewer.Scripts.Panorama
 
         public void ShowImage(Sprite sprite)
         {
+            Clear();
             _sprite = sprite;
             material.mainTexture = sprite.TextureFromSprite();
 
             if (_animateIcon360)
                 AnimateIcon360();
-            // RescalePanorama();
         }
 
-        public void ApplyInput(Vector2 deltaPosition)
+        public void Clear()
         {
-            OnRotate?.Invoke(deltaPosition.x);
+            // throw new NotImplementedException();
         }
+
+        public void ApplyInput(Vector2 deltaPosition) =>
+            OnRotate?.Invoke(deltaPosition.x);
 
         private void SetIcon()
         {
@@ -80,8 +84,8 @@ namespace PhotoViewer.Scripts.Panorama
             _localCenter = new Vector2(x, y);
         }
 
-        private void RescalePanorama() =>
-            GetComponent<RectTransform>().sizeDelta = new Vector2(1024, 768);
+        public void Zoom(float value) => 
+            _camera.fieldOfView = value * 123;
 
         private void AnimateIcon360()
         {
@@ -107,37 +111,17 @@ namespace PhotoViewer.Scripts.Panorama
                 });
         }
 
-        private void _AnimateIcon360()
+        private void InstantiateObjects()
         {
-            if (_iconRoutine != null)
-            {
-                StopCoroutine(_iconRoutine);
-                _iconRoutine = null;
-            }
+            Transform groupParent = new GameObject().transform;
+            groupParent.position = Vector3.one * 100;
+            groupParent.name = "PanoramaGroup";
 
-            _iconRoutine = StartCoroutine(IconRoutine());
-        }
+            _camera = Instantiate(_panoramaCameraPrefab, groupParent).GetComponent<Camera>();
+            _sphere = Instantiate(_panoramaSpherePrefab, groupParent);
 
-        private IEnumerator IconRoutine()
-        {
-            var animateTimer = 0f;
-            _icon360T.anchoredPosition = _localCenter;
-
-            while (animateTimer < _iconAnimateTime)
-            {
-                yield return null;
-
-                animateTimer += Time.deltaTime;
-
-                var position = Vector2.Lerp(_icon360T.anchoredPosition, _iconPosition,
-                    animateTimer / _iconAnimateTime);
-
-                _icon360T.anchoredPosition = position;
-            }
-
-            _icon360T.anchoredPosition = _iconPosition;
-
-            _iconRoutine = null;
+            material = _sphere.GetComponent<Renderer>().material;
+            OnRotate += _sphere.OnRotate;
         }
 
         //==========================================================================================================
@@ -159,44 +143,8 @@ namespace PhotoViewer.Scripts.Panorama
             //  });
         }
 
-        private void InstantiateObjects()
-        {
-            Transform groupParent = new GameObject().transform;
-            groupParent.position = Vector3.one * 100;
-            groupParent.name = "PanoramaGroup";
-
-            Instantiate(_panoramaCameraPrefab, groupParent).GetComponent<Camera>();
-            sphere = Instantiate(_panoramaSpherePrefab, groupParent);
-
-            material = sphere.GetComponent<Renderer>().material;
-            OnRotate += sphere.OnRotate;
-        }
-
-        private void _InstantiateObjects()
-        {
-            Transform groupParent = new GameObject().transform;
-            groupParent.position = Vector3.one * 100;
-            groupParent.name = "PanoramaGroup";
-
-            Instantiate(_panoramaCameraPrefab, groupParent);
-            sphere = Instantiate(_panoramaSpherePrefab, groupParent);
-
-            material = sphere.GetComponent<Renderer>().material;
-            OnRotate += sphere.OnRotate;
-        }
 
         private void OnDestroy() =>
-            OnRotate -= sphere.OnRotate;
-
-
-        public void Zoom(float value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Clear()
-        {
-            // throw new NotImplementedException();
-        }
+            OnRotate -= _sphere.OnRotate;
     }
 }
