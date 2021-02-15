@@ -222,9 +222,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282d1c1dd856425b814729c79b38d1ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _panoramaCameraPrefab: {fileID: 426894902550343399, guid: ebe78219b2cb2f54387b1e4ef74dec6d,
+  _panoramaCameraPrefab: {fileID: 6113236980257268651, guid: ebe78219b2cb2f54387b1e4ef74dec6d,
     type: 3}
-  _panoramaSpherePrefab: {fileID: -6440284486969605040, guid: afd2a2cd8c1db1f40b3f57f5db8a7022,
+  _panoramaSpherePrefab: {fileID: 8141382226192371911, guid: afd2a2cd8c1db1f40b3f57f5db8a7022,
     type: 3}
   _icon360: {fileID: 6981590248303407072}
   _animateIcon360: 1

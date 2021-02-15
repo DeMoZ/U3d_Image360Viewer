@@ -10,8 +10,8 @@ namespace PhotoViewer.Scripts.Panorama
     [RequireComponent(typeof(Routines))]
     public class PanoramaView : MonoBehaviour, IPhotoView //, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
-        [SerializeField] private GameObject _panoramaCameraPrefab;
-        [SerializeField] private PanoramaRotator _panoramaSpherePrefab;
+        [SerializeField] private PanoramaRotator _panoramaCameraPrefab;
+        [SerializeField] private GameObject _panoramaSpherePrefab;
         [SerializeField] private Image _icon360;
 
         [Tooltip("When true, the 360 icon will appear in center if view and animate to a default position.")]
@@ -24,13 +24,14 @@ namespace PhotoViewer.Scripts.Panorama
 
         private RenderTexture _renderTexture;
         private RectTransform _icon360T;
-        private PanoramaRotator _sphere;
+        private GameObject _sphere;
+        private PanoramaRotator _cameraR;
         private Camera _camera;
         private Material material;
 
         private float rotationSpeed;
 
-        public event Action<float> OnRotate;
+        public event Action<Vector2> OnRotate;
         private float screenWidth;
         private Direction beginDragDirection;
         private Vector2 _localCenter;
@@ -72,7 +73,7 @@ namespace PhotoViewer.Scripts.Panorama
         }
 
         public void ApplyInput(Vector2 deltaPosition) =>
-            OnRotate?.Invoke(deltaPosition.x);
+            OnRotate?.Invoke(deltaPosition);
 
         private void SetIcon()
         {
@@ -117,11 +118,12 @@ namespace PhotoViewer.Scripts.Panorama
             groupParent.position = Vector3.one * 100;
             groupParent.name = "PanoramaGroup";
 
-            _camera = Instantiate(_panoramaCameraPrefab, groupParent).GetComponent<Camera>();
+            _cameraR = Instantiate(_panoramaCameraPrefab, groupParent);
+            _camera = _cameraR.GetComponent<Camera>();
             _sphere = Instantiate(_panoramaSpherePrefab, groupParent);
 
             material = _sphere.GetComponent<Renderer>().material;
-            OnRotate += _sphere.OnRotate;
+            OnRotate += _cameraR.OnRotate;
         }
 
         //==========================================================================================================
@@ -145,6 +147,6 @@ namespace PhotoViewer.Scripts.Panorama
 
 
         private void OnDestroy() =>
-            OnRotate -= _sphere.OnRotate;
+            OnRotate -= _cameraR.OnRotate;
     }
 }

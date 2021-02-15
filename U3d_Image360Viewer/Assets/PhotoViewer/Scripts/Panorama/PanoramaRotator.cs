@@ -4,10 +4,17 @@ namespace PhotoViewer.Scripts.Panorama
 {
     public class PanoramaRotator : MonoBehaviour
     {
-        public void OnRotate(float deltaValue)
+        public void OnRotate(Vector2 deltaValue)
         {
-            Vector3 rotation =transform.rotation.eulerAngles + Vector3.up*deltaValue;
-            transform.rotation = Quaternion.Euler(rotation);
+            var euler = transform.rotation.eulerAngles;
+            euler = new Vector3(euler.x + -deltaValue.y, euler.y - deltaValue.x, euler.z);
+
+            if (euler.x > 180)
+                euler.x -= 360;
+
+            euler.x = Mathf.Clamp(euler.x, -60, 40);
+
+            transform.rotation = Quaternion.Euler(euler);
         }
     }
 }
