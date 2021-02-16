@@ -12,6 +12,7 @@ namespace PhotoViewer.Scripts.Panorama
     {
         [SerializeField] private PanoramaRotator _panoramaCameraPrefab;
         [SerializeField] private GameObject _panoramaSpherePrefab;
+        [SerializeField] private PanoramaMap _panoramaMap;
         [SerializeField] private Image _icon360;
 
         [Tooltip("When true, the 360 icon will appear in center if view and animate to a default position.")]
@@ -54,7 +55,9 @@ namespace PhotoViewer.Scripts.Panorama
 
             SetIcon();
             InstantiateObjects();
-            // SetRotateSpeed();
+
+            OnRotate += _cameraR.OnRotate;
+            OnRotate += _panoramaMap.OnRotate;
         }
 
         public void ShowImage(Sprite sprite)
@@ -67,8 +70,8 @@ namespace PhotoViewer.Scripts.Panorama
                 AnimateIcon360();
         }
 
-        public void Clear() => 
-            _cameraR.transform.rotation=Quaternion.Euler(Vector3.zero);
+        public void Clear() =>
+            _cameraR.transform.rotation = Quaternion.Euler(Vector3.zero);
 
         public void ApplyInput(Vector2 deltaPosition) =>
             OnRotate?.Invoke(deltaPosition);
@@ -83,8 +86,11 @@ namespace PhotoViewer.Scripts.Panorama
             _localCenter = new Vector2(x, y);
         }
 
-        public void Zoom(float value) => 
+        public void Zoom(float value)
+        {
             _camera.fieldOfView = value * 123;
+            _panoramaMap.SetViewPort(_camera.fieldOfView);
+        }
 
         private void AnimateIcon360()
         {
@@ -121,10 +127,12 @@ namespace PhotoViewer.Scripts.Panorama
             _sphere = Instantiate(_panoramaSpherePrefab, groupParent);
 
             material = _sphere.GetComponent<Renderer>().material;
-            OnRotate += _cameraR.OnRotate;
         }
 
-        private void OnDestroy() =>
+        private void OnDestroy()
+        {
             OnRotate -= _cameraR.OnRotate;
+            OnRotate -= _panoramaMap.OnRotate;
+        }
     }
 }
