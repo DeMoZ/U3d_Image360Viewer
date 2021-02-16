@@ -51,7 +51,7 @@ namespace PhotoViewer.Scripts
             _panoramaView.Clear();
             _photoView.Clear();
             _photoView.ShowImage(_imageDefault);
-            ResetZoom();
+            ResetPhotoZoom();
         }
 
         public void Show()
@@ -93,7 +93,7 @@ namespace PhotoViewer.Scripts
 
             if (IsPhoto(imageData.Sprite))
             {
-                ResetZoom();
+                ResetPhotoZoom();
                 _photoView.gameObject.SetActive(true);
                 _panoramaView.gameObject.SetActive(false);
 
@@ -103,7 +103,7 @@ namespace PhotoViewer.Scripts
             }
             else
             {
-                SetZoom(0.5f);
+                ResetPanoramaZoom(0.5f);
                 _photoView.gameObject.SetActive(false);
                 _panoramaView.gameObject.SetActive(true);
 
@@ -113,15 +113,18 @@ namespace PhotoViewer.Scripts
             }
         }
 
-        private void ResetZoom()
+        private void ResetPhotoZoom()
         {
             _zoomSlider.onValueChanged.RemoveListener(Zoom);
             _zoomSlider.value = 0;
             _zoomSlider.onValueChanged.AddListener(Zoom);
         }
 
-        private void SetZoom(float value) => 
+        private void ResetPanoramaZoom(float value)
+        {
             _zoomSlider.value = value;
+            _panoramaView.Zoom(value);
+        }
 
         private bool IsPhoto(Sprite sprite) =>
             sprite.texture.width / sprite.texture.height < 1.6f;

@@ -67,10 +67,8 @@ namespace PhotoViewer.Scripts.Panorama
                 AnimateIcon360();
         }
 
-        public void Clear()
-        {
-            // throw new NotImplementedException();
-        }
+        public void Clear() => 
+            _cameraR.transform.rotation=Quaternion.Euler(Vector3.zero);
 
         public void ApplyInput(Vector2 deltaPosition) =>
             OnRotate?.Invoke(deltaPosition);
@@ -125,26 +123,6 @@ namespace PhotoViewer.Scripts.Panorama
             material = _sphere.GetComponent<Renderer>().material;
             OnRotate += _cameraR.OnRotate;
         }
-
-        //==========================================================================================================
-
-
-        public void LeanIcon()
-        {
-            Color c = _icon360.color;
-            c.a = 0;
-            _icon360.color = c;
-            _icon360T.localScale = Vector3.one * 5f;
-
-            _icon360T.anchoredPosition = _localCenter;
-
-            //  LeanTween.alpha(icon360T, 0.5f, 0.3f).setOnComplete(() =>
-            //  {
-            //      LeanTween.scale(icon360T, Vector3.one, 0.5f);
-            //      LeanTween.move(icon360T, iconPosition, 0.5f);
-            //  });
-        }
-
 
         private void OnDestroy() =>
             OnRotate -= _cameraR.OnRotate;
