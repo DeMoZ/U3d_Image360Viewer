@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3150141145063526497}
   - component: {fileID: 7243583341248515217}
   - component: {fileID: 2579212669942882754}
+  - component: {fileID: 3584658460710819155}
   m_Layer: 5
   m_Name: MapImage
   m_TagString: Untagged
@@ -74,6 +75,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3584658460710819155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928441768494016658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.8}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &3420862579802890126
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +211,7 @@ GameObject:
   - component: {fileID: 5832641196369595853}
   - component: {fileID: 1354643490600027241}
   - component: {fileID: 796118258852872415}
+  - component: {fileID: 4170777941167708721}
   m_Layer: 5
   m_Name: RotateRightBtn
   m_TagString: Untagged
@@ -312,6 +329,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4170777941167708721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4067595480604842714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &4699135992707920988
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,6 +356,7 @@ GameObject:
   - component: {fileID: 6091496215938146321}
   - component: {fileID: 2722953121478094941}
   - component: {fileID: 688320965587281873}
+  - component: {fileID: 89804685878598545}
   m_Layer: 5
   m_Name: Map
   m_TagString: Untagged
@@ -381,7 +414,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4699135992707920988}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -403,6 +436,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &89804685878598545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4699135992707920988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &5185147670286286526
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +462,7 @@ GameObject:
   - component: {fileID: 8775514233597604537}
   - component: {fileID: 802478303126620247}
   - component: {fileID: 7726413504121615873}
+  - component: {fileID: 3567235163818850707}
   m_Layer: 5
   m_Name: PictureImage
   m_TagString: Untagged
@@ -477,6 +526,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3567235163818850707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5185147670286286526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &6638867558983589228
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,6 +553,7 @@ GameObject:
   - component: {fileID: 6086319458858285842}
   - component: {fileID: 6014801124514551039}
   - component: {fileID: 2756250804684326769}
+  - component: {fileID: 4327131718034651157}
   m_Layer: 5
   m_Name: RotateLeftBtn
   m_TagString: Untagged
@@ -606,6 +671,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4327131718034651157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6638867558983589228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &8062678853551765441
 GameObject:
   m_ObjectHideFlags: 0
