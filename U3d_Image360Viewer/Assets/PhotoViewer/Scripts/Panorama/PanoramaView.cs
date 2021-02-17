@@ -70,8 +70,11 @@ namespace PhotoViewer.Scripts.Panorama
                 AnimateIcon360();
         }
 
-        public void Clear() =>
+        public void Clear()
+        {
             _cameraR.transform.rotation = Quaternion.Euler(Vector3.zero);
+            _panoramaMap.Clear();
+        }
 
         public void ApplyInput(Vector2 deltaPosition) =>
             OnRotate?.Invoke(deltaPosition);

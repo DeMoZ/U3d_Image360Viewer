@@ -17,6 +17,8 @@ namespace PhotoViewer.Scripts.Panorama
 
         public void Clear()
         {
+            _lastRotZ = 0;
+            _viewPortT.rotation=Quaternion.Euler(Vector3.zero);
         }
 
         public void OnRotate(Vector2 deltaRotation)
