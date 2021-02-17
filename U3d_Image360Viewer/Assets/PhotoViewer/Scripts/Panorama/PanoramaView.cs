@@ -1,34 +1,43 @@
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts.Panorama
 {
-    public class PanoramaView : MonoBehaviour, IPhotoView //, IDragHandler, IBeginDragHandler, IEndDragHandler
+    [RequireComponent(typeof(Routines))]
+    public class PanoramaView : MonoBehaviour, IPhotoView
     {
-        [SerializeField] private GameObject panoramaCameraPrefab;
-        [SerializeField] private PanoramaRotator panoramaSpherePrefab;
-        [SerializeField] private Image icon360;
+        [SerializeField] private PanoramaRotator _panoramaCameraPrefab;
+        [SerializeField] private GameObject _panoramaSpherePrefab;
+        [SerializeField] private PanoramaMap _panoramaMap;
+        [SerializeField] private Image _icon360;
 
-        // [SerializeField] private float rotationSpeedMobile = 5f;
-        // [SerializeField] private float rotationSpeedOther = 25f;
-        // [SerializeField] private Direction rotateDirection = Direction.Horizontal;
+        [Tooltip("When true, the 360 icon will appear in center if view and animate to a default position.")]
+        [SerializeField]
+        private bool _animateIcon360 = true;
 
-        public Sprite sprite { get; set; }
+        private Routines _routines;
 
-        private RenderTexture renderTexture;
-        private RectTransform icon360T;
-        private PanoramaRotator sphere;
+        private Sprite _sprite;
+
+        private RenderTexture _renderTexture;
+        private RectTransform _icon360T;
+        private GameObject _sphere;
+        private PanoramaRotator _cameraR;
+        private Camera _camera;
         private Material material;
 
         private float rotationSpeed;
 
-        public event Action<float> OnRotate;
+        public event Action<Vector2> OnRotate;
         private float screenWidth;
         private Direction beginDragDirection;
-        private Vector2 iconPosition;
-        private Vector2 iconPositionCenter;
+        private Vector2 _localCenter;
+
+        private Coroutine _iconRoutine;
+        private Vector2 _iconPosition;
+        private float _iconAnimateTime = 1f;
+        private Color _iconColor;
 
         private enum Direction
         {
@@ -38,55 +47,74 @@ namespace PhotoViewer.Scripts.Panorama
 
         private void Awake()
         {
-            renderTexture = GetComponent<RenderTexture>();
-            icon360T = icon360.GetComponent<RectTransform>();
-            SetIconPositions();
+            _renderTexture = GetComponent<RenderTexture>();
+            _routines = GetComponent<Routines>();
+
+            SetIcon();
             InstantiateObjects();
-            // SetRotateSpeed();
+
+            OnRotate += _cameraR.OnRotate;
+            OnRotate += _panoramaMap.OnRotate;
         }
 
         public void ShowImage(Sprite sprite)
         {
-            this.sprite = sprite;
+            Clear();
+            _sprite = sprite;
             material.mainTexture = sprite.TextureFromSprite();
 
-            // RescalePanorama();
+            if (_animateIcon360)
+                AnimateIcon360();
         }
 
-        public void ApplyInput(Vector2 deltaPosition)
+        public void Clear()
         {
-            OnRotate?.Invoke(deltaPosition.x);
+            _cameraR.transform.rotation = Quaternion.Euler(Vector3.zero);
+            _panoramaMap.Clear();
+            Zoom(0.5f);
         }
 
-        private void RescalePanorama()
+        public void ApplyInput(Vector2 deltaPosition) =>
+            OnRotate?.Invoke(deltaPosition);
+
+        private void SetIcon()
         {
-            GetComponent<RectTransform>().sizeDelta = new Vector2(1024, 768);
+            _iconColor = _icon360.color;
+            _icon360T = _icon360.GetComponent<RectTransform>();
+            _iconPosition = _icon360T.anchoredPosition;
+            var x = GetComponent<RectTransform>().rect.width / 2;
+            var y = -GetComponent<RectTransform>().rect.height / 2;
+            _localCenter = new Vector2(x, y);
         }
 
-        //==========================================================================================================
-
-        public void LeanIcon()
+        public void Zoom(float value)
         {
-            Color c = icon360.color;
-            c.a = 0;
-            icon360.color = c;
-            icon360T.localScale = Vector3.one * 5f;
-
-            icon360T.anchoredPosition = iconPositionCenter;
-
-            //  LeanTween.alpha(icon360T, 0.5f, 0.3f).setOnComplete(() =>
-            //  {
-            //      LeanTween.scale(icon360T, Vector3.one, 0.5f);
-            //      LeanTween.move(icon360T, iconPosition, 0.5f);
-            //  });
+            _camera.fieldOfView = value * 123;
+            _panoramaMap.SetViewPort(_camera.fieldOfView);
         }
 
-        private void SetIconPositions()
+        private void AnimateIcon360()
         {
-            iconPosition = icon360T.anchoredPosition;
-            float x = GetComponent<RectTransform>().rect.width / 2;
-            float y = -GetComponent<RectTransform>().rect.height / 2;
-            iconPositionCenter = new Vector2(x, y);
+            var color = _icon360.color;
+            color.a = 0;
+            _icon360.color = color;
+            _icon360T.localScale = Vector3.one * 5f;
+
+            _icon360T.anchoredPosition = _localCenter;
+
+            _routines.LerpFloat(0, _iconColor.a, 0.3f, (a) =>
+                {
+                    color.a = a;
+                    _icon360.color = color;
+                },
+                () =>
+                {
+                    _routines.LerpVector2(_icon360T.anchoredPosition, _iconPosition, 0.5f,
+                        (vector) => { _icon360T.anchoredPosition = vector; });
+
+                    _routines.LerpVector2(_icon360T.localScale, Vector2.one, 0.5f,
+                        (vector) => { _icon360T.localScale = vector; });
+                });
         }
 
         private void InstantiateObjects()
@@ -95,25 +123,17 @@ namespace PhotoViewer.Scripts.Panorama
             groupParent.position = Vector3.one * 100;
             groupParent.name = "PanoramaGroup";
 
-            Instantiate(panoramaCameraPrefab, groupParent);
-            sphere = Instantiate(panoramaSpherePrefab, groupParent);
+            _cameraR = Instantiate(_panoramaCameraPrefab, groupParent);
+            _camera = _cameraR.GetComponent<Camera>();
+            _sphere = Instantiate(_panoramaSpherePrefab, groupParent);
 
-            material = sphere.GetComponent<Renderer>().material;
-            OnRotate += sphere.OnRotate;
+            material = _sphere.GetComponent<Renderer>().material;
         }
 
-        private void OnDestroy() =>
-            OnRotate -= sphere.OnRotate;
-
-
-        public void Zoom(float value)
+        private void OnDestroy()
         {
-            throw new NotImplementedException();
-        }
-
-        public void Clear()
-        {
-            // throw new NotImplementedException();
+            OnRotate -= _cameraR.OnRotate;
+            OnRotate -= _panoramaMap.OnRotate;
         }
     }
 }

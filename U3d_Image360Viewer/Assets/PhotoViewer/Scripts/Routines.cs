@@ -1,48 +1,72 @@
 ﻿using System;
-using System.Collections;
-using System.Timers;
 using UnityEngine;
+using System.Collections;
 
 namespace PhotoViewer.Scripts
 {
     public class Routines : MonoBehaviour
     {
-       private Coroutine _lerpFloat;
-
-        private float? _current = null;
-
-        public void LerpFloat(float from, float to,float time, bool fromCurrent = false, Action<float> callbackOnLerp = null, Action callbackOnEnd = null)
+        public void StopAllRoutines()
         {
-            if (fromCurrent && _current != null)
-                from = (float) _current;
-
-            if (_lerpFloat != null)
-            {
-                StopCoroutine(_lerpFloat);
-                _lerpFloat = null;
-            }
-
-            _lerpFloat = StartCoroutine(LerpRoutine(from, to,time, callbackOnLerp, callbackOnEnd));
+            StopAllCoroutines();
         }
+        
+        // public void NewRoutine<T>(T from, T to, float time, Action<T> callbackOnLerp = null,
+        //     Action callbackOnEnd = null) where T : struct
+        // {
+        //     if (typeof(T) == typeof(float))
+        //         StartCoroutine(LerpRoutineFloat((float) (object) from, (float) (object) to, time,
+        //             (Action<float>) (object) callbackOnLerp, callbackOnEnd));
+        //     
+        //     else if (typeof(T) == typeof(Vector2))
+        //         StartCoroutine(LerpRoutineVector2((Vector2) (object) from, (Vector2) (object) to, time,
+        //             (Action<Vector2>) (object) callbackOnLerp, callbackOnEnd));
+        // }
 
-        private IEnumerator LerpRoutine(float from, float to, float time, Action<float> callbackOnLerp, Action callbackOnEnd)
+        public void LerpFloat(float from, float to, float time, Action<float> callbackOnLerp = null,
+            Action callbackOnEnd = null) =>
+            StartCoroutine(LerpRoutineFloat(@from, to, time, callbackOnLerp, callbackOnEnd));
+
+        public void LerpVector2(Vector2 from, Vector2 to, float time, Action<Vector2> callbackOnLerp = null,
+            Action callbackOnEnd = null) =>
+            StartCoroutine(LerpRoutineVector2(@from, to, time, callbackOnLerp, callbackOnEnd));
+
+        private IEnumerator LerpRoutineVector2(Vector2 from, Vector2 to, float time, Action<Vector2> callbackOnLerp,
+            Action callbackOnEnd)
         {
+            var value = from;
             float timer = 0;
-            
-            while (timer< time)
+
+            while (timer < time)
             {
                 yield return null;
-                
+
                 timer += Time.deltaTime;
-               _current= Mathf.Lerp(from, to, timer / time);
-                
-                callbackOnLerp?.Invoke((float) _current);
+                value = Vector2.Lerp(from, to, timer / time);
+
+                callbackOnLerp?.Invoke(value);
             }
- 
-            yield return null;
+
             callbackOnEnd?.Invoke();
-            _current = null;
-            _lerpFloat = null;
+        }
+
+        private IEnumerator LerpRoutineFloat(float from, float to, float time, Action<float> callbackOnLerp,
+            Action callbackOnEnd)
+        {
+            var value = from;
+            float timer = 0;
+
+            while (timer < time)
+            {
+                yield return null;
+
+                timer += Time.deltaTime;
+                value = Mathf.Lerp(from, to, timer / time);
+
+                callbackOnLerp?.Invoke(value);
+            }
+
+            callbackOnEnd?.Invoke();
         }
     }
 }
