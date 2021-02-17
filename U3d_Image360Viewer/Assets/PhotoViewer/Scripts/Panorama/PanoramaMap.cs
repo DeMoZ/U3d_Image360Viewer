@@ -5,9 +5,10 @@ namespace PhotoViewer.Scripts.Panorama
 {
     public class PanoramaMap : MonoBehaviour
     {
-        [SerializeField] private RectTransform _map;
         [SerializeField] private Image _viewPort;
+        
         private RectTransform _viewPortT;
+        private float _lastRotZ;
 
         private void Awake()
         {
@@ -24,7 +25,15 @@ namespace PhotoViewer.Scripts.Panorama
             _viewPortT.rotation = Quaternion.Euler(rotation);
         }
 
-        public void SetViewPort(float value) =>
+        public void SetViewPort(float value)
+        {
+            var deltaZ = value - _lastRotZ;
+            _lastRotZ = value;
+
+            var rotation = _viewPortT.rotation.eulerAngles + Vector3.forward * deltaZ / 2;
+            _viewPortT.rotation = Quaternion.Euler(rotation);
+
             _viewPort.fillAmount = value / 360;
+        }
     }
 }
