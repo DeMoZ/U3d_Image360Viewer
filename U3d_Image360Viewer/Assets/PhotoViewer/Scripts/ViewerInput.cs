@@ -1,12 +1,9 @@
-﻿using System;
-using UnityEditor;
-using UnityEditorInternal;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace PhotoViewer.Scripts
 {
-    public abstract class ViewerInput : MonoBehaviour, IDragHandler, IBeginDragHandler , IPointerDownHandler
+    public abstract class ViewerInput : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         protected abstract void OnUpdate();
 
@@ -15,10 +12,10 @@ namespace PhotoViewer.Scripts
         [SerializeField] private float _speedOther = 25f;
 
         protected Vector2 _deltaPosition = Vector2.zero;
-
         private float _speedCurrent;
+        private bool isToched;
 
-        private void Awake() => 
+        private void Awake() =>
             SetSpeed();
 
         private void SetSpeed()
@@ -32,19 +29,19 @@ namespace PhotoViewer.Scripts
 
         private void Update()
         {
-            _deltaPosition = Vector2.Lerp(_deltaPosition, Vector2.zero, Time.deltaTime * _dumping);
+            if (!isToched)
+                _deltaPosition = Vector2.Lerp(_deltaPosition, Vector2.zero, Time.deltaTime * _dumping);
 
             OnUpdate();
         }
 
-        public void OnBeginDrag(PointerEventData eventData)
-        {
-        }
-
-        public void OnPointerDown(PointerEventData eventData) => 
-            _deltaPosition = eventData.delta * Time.deltaTime * _speedCurrent;
-
+        public void OnBeginDrag(PointerEventData eventData) =>
+            isToched = true;
+              
         public void OnDrag(PointerEventData eventData) =>
             _deltaPosition = eventData.delta * Time.deltaTime * _speedCurrent;
+
+        public void OnEndDrag(PointerEventData eventData) =>
+            isToched = false;
     }
 }
