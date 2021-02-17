@@ -89,7 +89,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b5ab7e9eb1243fcb4ff59cb836c5f31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _map: {fileID: 6323839088005958179}
   _viewPort: {fileID: 8419716080863336672}
 --- !u!1 &1638897064860071769
 GameObject:
@@ -483,7 +482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dumping: 3
   _speedMobile: 5
-  _speedOther: 25
+  _speedOther: 5
 --- !u!114 &448738114200697325
 MonoBehaviour:
   m_ObjectHideFlags: 0

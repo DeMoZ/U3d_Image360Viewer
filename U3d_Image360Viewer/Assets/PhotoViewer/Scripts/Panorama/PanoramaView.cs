@@ -1,14 +1,11 @@
 using System;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
-using Image = UnityEngine.UI.Image;
+using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts.Panorama
 {
     [RequireComponent(typeof(Routines))]
-    public class PanoramaView : MonoBehaviour, IPhotoView //, IDragHandler, IBeginDragHandler, IEndDragHandler
+    public class PanoramaView : MonoBehaviour, IPhotoView
     {
         [SerializeField] private PanoramaRotator _panoramaCameraPrefab;
         [SerializeField] private GameObject _panoramaSpherePrefab;
@@ -74,6 +71,7 @@ namespace PhotoViewer.Scripts.Panorama
         {
             _cameraR.transform.rotation = Quaternion.Euler(Vector3.zero);
             _panoramaMap.Clear();
+            Zoom(0.5f);
         }
 
         public void ApplyInput(Vector2 deltaPosition) =>

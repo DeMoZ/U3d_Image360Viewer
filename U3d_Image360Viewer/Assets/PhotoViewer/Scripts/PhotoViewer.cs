@@ -120,11 +120,8 @@ namespace PhotoViewer.Scripts
             _zoomSlider.onValueChanged.AddListener(Zoom);
         }
 
-        private void ResetPanoramaZoom(float value)
-        {
+        private void ResetPanoramaZoom(float value) => 
             _zoomSlider.value = value;
-            _panoramaView.Zoom(value);
-        }
 
         private bool IsPhoto(Sprite sprite) =>
             sprite.texture.width / sprite.texture.height < 1.6f;
