@@ -81,6 +81,9 @@ namespace PhotoViewer.Scripts
             ShowImage(_images[_currentPhoto]);
         }
 
+        public void SetZoomSlider(float value) => 
+            _zoomSlider.value += value;
+
         private void Zoom(float value) =>
             _currentView?.Zoom(_zoomSlider.value);
 
