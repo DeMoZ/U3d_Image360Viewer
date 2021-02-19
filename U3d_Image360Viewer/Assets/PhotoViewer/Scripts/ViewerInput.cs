@@ -12,6 +12,7 @@ namespace PhotoViewer.Scripts
         [SerializeField] private float _speedOther = 25f;
 
         protected Vector2 _deltaPosition = Vector2.zero;
+
         private float _speedCurrent;
         private bool isToched;
 
@@ -37,7 +38,7 @@ namespace PhotoViewer.Scripts
 
         public void OnBeginDrag(PointerEventData eventData) =>
             isToched = true;
-              
+
         public void OnDrag(PointerEventData eventData) =>
             _deltaPosition = eventData.delta * Time.deltaTime * _speedCurrent;
 
