@@ -5,15 +5,25 @@ namespace PhotoViewer.Scripts
     public class MouseWheelZoom : MonoBehaviour
     {
         [SerializeField] private PhotoViewer _viewer;
-        [SerializeField] private float _mouseWheelSpeed = 15f;
-        private float _mouseWheelDelta;
+        [SerializeField] private float _speed = 25f;
+        [SerializeField] private float _dumping = 4f;
+
+        private float _delta;
+
+        private void Start() => 
+            _viewer.SubscribeMeOnNewImage(Clear);
 
         private void Update()
         {
-            _mouseWheelDelta = Input.GetAxis("Mouse ScrollWheel");
-            _mouseWheelDelta = _mouseWheelDelta * Time.deltaTime * _mouseWheelSpeed;
-
-            _viewer.SetZoomSlider(_mouseWheelDelta);
+            var delta = -Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * _speed;
+            _delta = Mathf.Lerp(_delta, delta, Time.deltaTime * _dumping);
+            _viewer.SetZoomSlider(_delta);
         }
+
+        private void Clear() => 
+            _delta = 0;
+
+        private void OnDestroy()=>
+            _viewer.UnSubscribeMeOnNewImage(Clear);
     }
 }

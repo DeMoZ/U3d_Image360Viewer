@@ -23,6 +23,7 @@ namespace PhotoViewer.Scripts
 
         private IPhotoView _currentView;
 
+        private event Action ShowNewImage;
         public event Action CloseImageViewer;
 
         private void Start() =>
@@ -81,14 +82,30 @@ namespace PhotoViewer.Scripts
             ShowImage(_images[_currentPhoto]);
         }
 
-        public void SetZoomSlider(float value) => 
-            _zoomSlider.value += value;
+        public void SetZoomSlider(float value)
+        {
+            if (_currentView.GetType() == typeof(PhotoView))
+                _zoomSlider.value -= value;
+            else
+                _zoomSlider.value += value;
+        }
+
+        public void SubscribeMeOnNewImage(Action callback)
+        {
+            ShowNewImage += callback;
+        }
+        public void UnSubscribeMeOnNewImage(Action callback)
+        {
+            ShowNewImage -= callback;
+        }
 
         private void Zoom(float value) =>
             _currentView?.Zoom(_zoomSlider.value);
 
         private void ShowImage(ImageData imageData)
         {
+            ShowNewImage?.Invoke();
+
             _imageName.text = imageData.Name;
             _imageDate.text = imageData.Date;
             // var dt = DateTime.Parse(list[n].Key);
@@ -123,7 +140,7 @@ namespace PhotoViewer.Scripts
             _zoomSlider.onValueChanged.AddListener(Zoom);
         }
 
-        private void ResetPanoramaZoom(float value) => 
+        private void ResetPanoramaZoom(float value) =>
             _zoomSlider.value = value;
 
         private bool IsPhoto(Sprite sprite) =>

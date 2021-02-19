@@ -944,7 +944,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _viewer: {fileID: 3045583192945627958}
-  _mouseWheelSpeed: 15
+  _speed: 25
+  _dumping: 4
 --- !u!1 &2606391359472960952
 GameObject:
   m_ObjectHideFlags: 0
