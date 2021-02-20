@@ -22,6 +22,7 @@ namespace PhotoViewer.Scripts
         private int _currentPhoto { get; set; }
 
         private IPhotoView _currentView;
+        private ImageData _currentImageData;
 
         private event Action ShowNewImage;
         public event Action CloseImageViewer;
@@ -47,6 +48,7 @@ namespace PhotoViewer.Scripts
         {
             _images.Clear();
 
+            _currentImageData = new ImageData();
             _btnPrev.SetActive(false);
             _btnNext.SetActive(false);
             _panoramaView.Clear();
@@ -99,11 +101,16 @@ namespace PhotoViewer.Scripts
             ShowNewImage -= callback;
         }
 
+        public void ResetCurrentImage() => 
+            ShowImage(_currentImageData);
+
         private void Zoom(float value) =>
             _currentView?.Zoom(_zoomSlider.value);
 
         private void ShowImage(ImageData imageData)
         {
+            _currentImageData = imageData;
+
             ShowNewImage?.Invoke();
 
             _imageName.text = imageData.Name;
