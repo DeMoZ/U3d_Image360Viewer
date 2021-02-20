@@ -44,5 +44,8 @@ namespace PhotoViewer.Scripts
 
         public void OnEndDrag(PointerEventData eventData) =>
             isToched = false;
+
+        public void Clear() =>
+            _deltaPosition = Vector2.zero;
     }
 }

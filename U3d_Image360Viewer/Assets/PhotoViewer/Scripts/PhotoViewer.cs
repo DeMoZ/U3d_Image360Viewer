@@ -113,6 +113,7 @@ namespace PhotoViewer.Scripts
 
             if (IsPhoto(imageData.Sprite))
             {
+                _photoView.GetComponent<ViewerInput>().Clear();
                 ResetPhotoZoom();
                 _photoView.gameObject.SetActive(true);
                 _panoramaView.gameObject.SetActive(false);
@@ -123,6 +124,7 @@ namespace PhotoViewer.Scripts
             }
             else
             {
+                _panoramaView.GetComponent<ViewerInput>().Clear();
                 ResetPanoramaZoom(0.5f);
                 _photoView.gameObject.SetActive(false);
                 _panoramaView.gameObject.SetActive(true);
