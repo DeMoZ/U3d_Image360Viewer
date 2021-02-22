@@ -11,18 +11,6 @@ namespace PhotoViewer.Scripts
             StopAllCoroutines();
         }
         
-        // public void NewRoutine<T>(T from, T to, float time, Action<T> callbackOnLerp = null,
-        //     Action callbackOnEnd = null) where T : struct
-        // {
-        //     if (typeof(T) == typeof(float))
-        //         StartCoroutine(LerpRoutineFloat((float) (object) from, (float) (object) to, time,
-        //             (Action<float>) (object) callbackOnLerp, callbackOnEnd));
-        //     
-        //     else if (typeof(T) == typeof(Vector2))
-        //         StartCoroutine(LerpRoutineVector2((Vector2) (object) from, (Vector2) (object) to, time,
-        //             (Action<Vector2>) (object) callbackOnLerp, callbackOnEnd));
-        // }
-
         public void LerpFloat(float from, float to, float time, Action<float> callbackOnLerp = null,
             Action callbackOnEnd = null) =>
             StartCoroutine(LerpRoutineFloat(@from, to, time, callbackOnLerp, callbackOnEnd));
@@ -47,6 +35,7 @@ namespace PhotoViewer.Scripts
                 callbackOnLerp?.Invoke(value);
             }
 
+            callbackOnLerp?.Invoke(to);
             callbackOnEnd?.Invoke();
         }
 
@@ -66,6 +55,7 @@ namespace PhotoViewer.Scripts
                 callbackOnLerp?.Invoke(value);
             }
 
+            callbackOnLerp?.Invoke(to);
             callbackOnEnd?.Invoke();
         }
     }

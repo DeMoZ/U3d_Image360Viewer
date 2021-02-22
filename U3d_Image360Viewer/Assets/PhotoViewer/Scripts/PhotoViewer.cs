@@ -13,6 +13,7 @@ namespace PhotoViewer.Scripts
         [SerializeField] private PhotoView _photoView;
         [SerializeField] private GameObject _btnNext;
         [SerializeField] private GameObject _btnPrev;
+        [SerializeField] private ResetButton _btnReset;
         [SerializeField] private Sprite _imageDefault;
         [SerializeField] private Text _imageName;
         [SerializeField] private Text _imageDate;
@@ -22,12 +23,18 @@ namespace PhotoViewer.Scripts
         private int _currentPhoto { get; set; }
 
         private IPhotoView _currentView;
+        private ImageData _currentImageData;
 
         private event Action ShowNewImage;
         public event Action CloseImageViewer;
 
-        private void Start() =>
+        private void Start()
+        {
             _zoomSlider.onValueChanged.AddListener(Zoom);
+            _btnReset.Show(false);
+            _photoView.SubscribeMeOnChange(() => { _btnReset.Show(true); });
+            _panoramaView.SubscribeMeOnChange(() => { _btnReset.Show(true); });
+        }
 
         public void CloseViewer()
         {
@@ -47,12 +54,14 @@ namespace PhotoViewer.Scripts
         {
             _images.Clear();
 
+            _currentImageData = new ImageData();
             _btnPrev.SetActive(false);
             _btnNext.SetActive(false);
             _panoramaView.Clear();
             _photoView.Clear();
             _photoView.ShowImage(_imageDefault);
             ResetPhotoZoom();
+            _btnReset.Show(false);
         }
 
         public void Show()
@@ -90,20 +99,25 @@ namespace PhotoViewer.Scripts
                 _zoomSlider.value += value;
         }
 
-        public void SubscribeMeOnNewImage(Action callback)
-        {
+        public void SubscribeMeOnNewImage(Action callback) => 
             ShowNewImage += callback;
-        }
-        public void UnSubscribeMeOnNewImage(Action callback)
-        {
+        
+        public void UnSubscribeMeOnNewImage(Action callback) => 
             ShowNewImage -= callback;
-        }
 
-        private void Zoom(float value) =>
+        public void ResetCurrentImage() =>
+            ShowImage(_currentImageData);
+
+        private void Zoom(float value)
+        {
+            _btnReset.Show(true);
             _currentView?.Zoom(_zoomSlider.value);
+        }
 
         private void ShowImage(ImageData imageData)
         {
+            _currentImageData = imageData;
+
             ShowNewImage?.Invoke();
 
             _imageName.text = imageData.Name;
@@ -113,6 +127,7 @@ namespace PhotoViewer.Scripts
 
             if (IsPhoto(imageData.Sprite))
             {
+                _photoView.GetComponent<ViewerInput>().Clear();
                 ResetPhotoZoom();
                 _photoView.gameObject.SetActive(true);
                 _panoramaView.gameObject.SetActive(false);
@@ -123,6 +138,7 @@ namespace PhotoViewer.Scripts
             }
             else
             {
+                _panoramaView.GetComponent<ViewerInput>().Clear();
                 ResetPanoramaZoom(0.5f);
                 _photoView.gameObject.SetActive(false);
                 _panoramaView.gameObject.SetActive(true);
@@ -131,6 +147,8 @@ namespace PhotoViewer.Scripts
 
                 _panoramaView.ShowImage(imageData.Sprite);
             }
+
+            _btnReset.Show(false);
         }
 
         private void ResetPhotoZoom()

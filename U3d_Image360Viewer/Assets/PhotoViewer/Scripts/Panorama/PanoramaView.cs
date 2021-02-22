@@ -39,6 +39,7 @@ namespace PhotoViewer.Scripts.Panorama
         private float _iconAnimateTime = 1f;
         private Color _iconColor;
 
+        private event Action OnChange;
         private enum Direction
         {
             Horizontal,
@@ -74,8 +75,13 @@ namespace PhotoViewer.Scripts.Panorama
             Zoom(0.5f);
         }
 
-        public void ApplyInput(Vector2 deltaPosition) =>
+        public void ApplyInput(Vector2 deltaPosition)
+        {
             OnRotate?.Invoke(deltaPosition);
+
+            if (deltaPosition != Vector2.zero)
+                OnChange?.Invoke();
+        }
 
         private void SetIcon()
         {
@@ -92,6 +98,12 @@ namespace PhotoViewer.Scripts.Panorama
             _camera.fieldOfView = value * 123;
             _panoramaMap.SetViewPort(_camera.fieldOfView);
         }
+
+        public void SubscribeMeOnChange(Action callback) =>
+            OnChange += callback;
+
+        public void UnSubscribeMeOnChange(Action callback) =>
+            OnChange -= callback;
 
         private void AnimateIcon360()
         {
