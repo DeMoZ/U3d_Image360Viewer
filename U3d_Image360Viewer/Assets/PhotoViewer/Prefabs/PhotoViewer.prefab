@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 3573197402857594935}
   - component: {fileID: 634891628813277695}
   - component: {fileID: 1385817279861923441}
+  - component: {fileID: 1055339418312620272}
   m_Layer: 5
   m_Name: ResetBtn
   m_TagString: Untagged
@@ -319,6 +320,19 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1.5, y: -1.5}
   m_UseGraphicAlpha: 1
+--- !u!114 &1055339418312620272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2442175876127752545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5042ca0d043e7bd46b67571fe2af0da9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 634891628813277695}
 --- !u!1 &2545059089410305317
 GameObject:
   m_ObjectHideFlags: 0
@@ -1073,6 +1087,7 @@ MonoBehaviour:
   _photoView: {fileID: 6187132651290733224}
   _btnNext: {fileID: 2606391358566567147}
   _btnPrev: {fileID: 2606391359472960952}
+  _btnReset: {fileID: 1055339418312620272}
   _imageDefault: {fileID: 21300000, guid: c509896ec7961154296f5fa574d9646b, type: 3}
   _imageName: {fileID: 2606391359178018898}
   _imageDate: {fileID: 1230756734228030604}
@@ -2117,6 +2132,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c94dc38341782924cae4d53228eaedc7, type: 3}
+--- !u!224 &3242443437148247825 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4474670242504943722, guid: c94dc38341782924cae4d53228eaedc7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1361848233571139451}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6187132651290733224 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5132799130726798803, guid: c94dc38341782924cae4d53228eaedc7,
@@ -2129,12 +2150,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32173d771ff24304ab7ccf25f83726c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &3242443437148247825 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4474670242504943722, guid: c94dc38341782924cae4d53228eaedc7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1361848233571139451}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4549879149438693324
 PrefabInstance:
   m_ObjectHideFlags: 0

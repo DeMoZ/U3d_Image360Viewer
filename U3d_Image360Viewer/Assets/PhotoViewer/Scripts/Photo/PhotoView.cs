@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,8 @@ namespace PhotoViewer.Scripts.Photo
         private RectTransform _imageTransform;
 
         private Vector2? _defaultImageSize;
+
+        private event Action OnChange;
 
         private Vector2 ViewerSize
         {
@@ -69,6 +72,8 @@ namespace PhotoViewer.Scripts.Photo
             var euler = _imageTransform.rotation.eulerAngles;
             _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, euler.z + 90);
             _photoMap.SetSize(ImageSize, ViewerSize);
+
+            OnChange?.Invoke();
         }
 
         public void RotateRight()
@@ -76,6 +81,8 @@ namespace PhotoViewer.Scripts.Photo
             var euler = _imageTransform.rotation.eulerAngles;
             _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, euler.z - 90);
             _photoMap.SetSize(ImageSize, ViewerSize);
+
+            OnChange?.Invoke();
         }
 
         public void ApplyInput(Vector2 deltaPosition)
@@ -108,9 +115,12 @@ namespace PhotoViewer.Scripts.Photo
             else
                 newPosition.y = 0;
 
-            _imageTransform.localPosition = (Vector3) newPosition;
+            _imageTransform.localPosition = (Vector3)newPosition;
 
             _photoMap.SetPosition(newPosition, ImageSize, ViewerSize);
+
+            if (deltaPosition != Vector2.zero)
+                OnChange?.Invoke();
         }
 
         public void Clear()
@@ -118,6 +128,12 @@ namespace PhotoViewer.Scripts.Photo
             var euler = _imageTransform.rotation.eulerAngles;
             _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, 0);
         }
+
+        public void SubscribeMeOnChange(Action callback) =>
+            OnChange += callback;
+
+        public void UnSubscribeMeOnChange(Action callback) =>
+            OnChange -= callback;
 
         private void RescalePhoto(Sprite sprite)
         {
