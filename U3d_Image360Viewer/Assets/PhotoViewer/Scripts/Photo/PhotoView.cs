@@ -6,8 +6,8 @@ namespace PhotoViewer.Scripts.Photo
 {
     public class PhotoView : MonoBehaviour, IPhotoView
     {
-        [SerializeField] private Image _image;
-        [SerializeField] private PhotoMap _photoMap;
+        [SerializeField] private Image _image = null;
+        [SerializeField] private PhotoMap _photoMap = null;
 
         private RectTransform _transform;
 
@@ -31,7 +31,7 @@ namespace PhotoViewer.Scripts.Photo
             get
             {
                 var rect = _imageTransform.rect;
-                var angle = (int) _imageTransform.rotation.eulerAngles.z;
+                var angle = (int)_imageTransform.rotation.eulerAngles.z;
                 Vector2 result;
 
                 if (angle == 0 || angle == 180)
@@ -63,7 +63,7 @@ namespace PhotoViewer.Scripts.Photo
             if (_defaultImageSize == null)
                 return;
 
-            _imageTransform.sizeDelta = (Vector2) (_defaultImageSize + _defaultImageSize * value * 10);
+            _imageTransform.sizeDelta = (Vector2)(_defaultImageSize + _defaultImageSize * value * 10);
             _photoMap.SetSize(ImageSize, ViewerSize);
         }
 

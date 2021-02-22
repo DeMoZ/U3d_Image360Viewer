@@ -47,5 +47,8 @@ namespace PhotoViewer.Scripts
 
         public void Clear() =>
             _deltaPosition = Vector2.zero;
+
+        private void UnityNeverUsed() => 
+            Debug.Log(_speedMobile);
     }
 }

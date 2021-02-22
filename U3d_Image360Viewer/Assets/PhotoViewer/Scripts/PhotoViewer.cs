@@ -9,15 +9,15 @@ namespace PhotoViewer.Scripts
 {
     public class PhotoViewer : MonoBehaviour
     {
-        [SerializeField] private PanoramaView _panoramaView;
-        [SerializeField] private PhotoView _photoView;
-        [SerializeField] private GameObject _btnNext;
-        [SerializeField] private GameObject _btnPrev;
-        [SerializeField] private ResetButton _btnReset;
-        [SerializeField] private Sprite _imageDefault;
-        [SerializeField] private Text _imageName;
-        [SerializeField] private Text _imageDate;
-        [SerializeField] private Slider _zoomSlider;
+        [SerializeField] private PanoramaView _panoramaView = null;
+        [SerializeField] private PhotoView _photoView = null;
+        [SerializeField] private GameObject _btnNext = null;
+        [SerializeField] private GameObject _btnPrev = null;
+        [SerializeField] private ResetButton _btnReset = null;
+        [SerializeField] private Sprite _imageDefault = null;
+        [SerializeField] private Text _imageName = null;
+        [SerializeField] private Text _imageDate = null;
+        [SerializeField] private Slider _zoomSlider = null;
 
         private List<ImageData> _images = new List<ImageData>();
         private int _currentPhoto { get; set; }
@@ -99,10 +99,10 @@ namespace PhotoViewer.Scripts
                 _zoomSlider.value += value;
         }
 
-        public void SubscribeMeOnNewImage(Action callback) => 
+        public void SubscribeMeOnNewImage(Action callback) =>
             ShowNewImage += callback;
-        
-        public void UnSubscribeMeOnNewImage(Action callback) => 
+
+        public void UnSubscribeMeOnNewImage(Action callback) =>
             ShowNewImage -= callback;
 
         public void ResetCurrentImage() =>
@@ -166,5 +166,8 @@ namespace PhotoViewer.Scripts
 
         private void OnDestroy() =>
             _zoomSlider.onValueChanged.RemoveAllListeners();
+
+        private string GetImageDate() =>
+            _imageDate.text;
     }
 }

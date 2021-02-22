@@ -5,7 +5,7 @@ namespace PhotoViewer.Scripts.Panorama
 {
     public class PanoramaMap : MonoBehaviour
     {
-        [SerializeField] private Image _viewPort;
+        [SerializeField] private Image _viewPort = null;
         
         private RectTransform _viewPortT;
         private float _lastRotZ;

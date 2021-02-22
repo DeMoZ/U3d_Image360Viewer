@@ -5,13 +5,13 @@ namespace PhotoViewer.Scripts
 {
     public class TestImageLoader : MonoBehaviour
     {
-        [SerializeField] private PhotoViewer _photoViewer;
-        [SerializeField] private TestImageLibrary _imageLibrary;
+        [SerializeField] private PhotoViewer _photoViewer = null;
+        [SerializeField] private TestImageLibrary _imageLibrary = null;
 
         private void Start()
         {
             _photoViewer.AddImageData(_imageLibrary.ImageDatas);
-            
+
             _photoViewer.Show();
         }
     }

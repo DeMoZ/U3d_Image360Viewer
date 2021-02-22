@@ -4,7 +4,7 @@ namespace PhotoViewer.Scripts
 {
     public class MouseWheelZoom : MonoBehaviour
     {
-        [SerializeField] private PhotoViewer _viewer;
+        [SerializeField] private PhotoViewer _viewer = null;
         [SerializeField] private float _speed = 25f;
         [SerializeField] private float _dumping = 4f;
 

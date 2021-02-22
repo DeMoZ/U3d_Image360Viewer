@@ -7,10 +7,10 @@ namespace PhotoViewer.Scripts.Panorama
     [RequireComponent(typeof(Routines))]
     public class PanoramaView : MonoBehaviour, IPhotoView
     {
-        [SerializeField] private PanoramaRotator _panoramaCameraPrefab;
-        [SerializeField] private GameObject _panoramaSpherePrefab;
-        [SerializeField] private PanoramaMap _panoramaMap;
-        [SerializeField] private Image _icon360;
+        [SerializeField] private PanoramaRotator _panoramaCameraPrefab = null;
+        [SerializeField] private GameObject _panoramaSpherePrefab = null;
+        [SerializeField] private PanoramaMap _panoramaMap = null;
+        [SerializeField] private Image _icon360 = null;
 
         [Tooltip("When true, the 360 icon will appear in center if view and animate to a default position.")]
         [SerializeField]
@@ -18,28 +18,21 @@ namespace PhotoViewer.Scripts.Panorama
 
         private Routines _routines;
 
-        private Sprite _sprite;
-
-        private RenderTexture _renderTexture;
         private RectTransform _icon360T;
         private GameObject _sphere;
         private PanoramaRotator _cameraR;
         private Camera _camera;
         private Material material;
 
-        private float rotationSpeed;
-
         public event Action<Vector2> OnRotate;
-        private float screenWidth;
-        private Direction beginDragDirection;
         private Vector2 _localCenter;
 
-        private Coroutine _iconRoutine;
         private Vector2 _iconPosition;
-        private float _iconAnimateTime = 1f;
+        private float _iconAnimateTime = 0.5f;
         private Color _iconColor;
 
         private event Action OnChange;
+
         private enum Direction
         {
             Horizontal,
@@ -48,7 +41,6 @@ namespace PhotoViewer.Scripts.Panorama
 
         private void Awake()
         {
-            _renderTexture = GetComponent<RenderTexture>();
             _routines = GetComponent<Routines>();
 
             SetIcon();
@@ -61,7 +53,6 @@ namespace PhotoViewer.Scripts.Panorama
         public void ShowImage(Sprite sprite)
         {
             Clear();
-            _sprite = sprite;
             material.mainTexture = sprite.TextureFromSprite();
 
             if (_animateIcon360)
@@ -121,10 +112,10 @@ namespace PhotoViewer.Scripts.Panorama
                 },
                 () =>
                 {
-                    _routines.LerpVector2(_icon360T.anchoredPosition, _iconPosition, 0.5f,
+                    _routines.LerpVector2(_icon360T.anchoredPosition, _iconPosition, _iconAnimateTime,
                         (vector) => { _icon360T.anchoredPosition = vector; });
 
-                    _routines.LerpVector2(_icon360T.localScale, Vector2.one, 0.5f,
+                    _routines.LerpVector2(_icon360T.localScale, Vector2.one, _iconAnimateTime,
                         (vector) => { _icon360T.localScale = vector; });
                 });
         }
