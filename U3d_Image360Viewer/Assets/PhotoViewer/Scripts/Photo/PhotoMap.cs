@@ -2,10 +2,10 @@
 
 namespace PhotoViewer.Scripts.Photo
 {
-    public class PhotoMap : MonoBehaviour
+    public class PhotoMap : ViewerMap
     {
-        [SerializeField] private RectTransform _map;
-        [SerializeField] private RectTransform _picture;
+        [SerializeField] private RectTransform _map = default;
+        [SerializeField] private RectTransform _picture = default;
         private RectTransform _transform;
 
         private Vector2 _photoMapSize
@@ -31,12 +31,12 @@ namespace PhotoViewer.Scripts.Photo
         {
             var newPosition = Vector2.zero;
             var imgBigSize = (imgSize.x > imgSize.y) ? imgSize.x : imgSize.y;
-            newPosition.x = -position.x * (_photoMapSize.x / imgBigSize)  + _photoMapSize.x / 2;
+            newPosition.x = -position.x * (_photoMapSize.x / imgBigSize) + _photoMapSize.x / 2;
             newPosition.y = -position.y * (_photoMapSize.y / imgBigSize) + _photoMapSize.y / 2;
-           
+
             _map.localPosition = newPosition;
         }
-        
+
         public void SetSize(Vector2 imageSize, Vector2 viewSize)
         {
             var imageMagn = imageSize.magnitude;

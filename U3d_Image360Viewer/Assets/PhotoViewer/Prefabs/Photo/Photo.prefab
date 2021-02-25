@@ -355,7 +355,9 @@ GameObject:
   - component: {fileID: 1317793829938653232}
   - component: {fileID: 6091496215938146321}
   - component: {fileID: 2722953121478094941}
+  - component: {fileID: 2959788233671170794}
   - component: {fileID: 688320965587281873}
+  - component: {fileID: 4037718134316791169}
   - component: {fileID: 89804685878598545}
   m_Layer: 5
   m_Name: Map
@@ -405,8 +407,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f130f2391954112ab1c43a5f1860ff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _routines: {fileID: 2959788233671170794}
+  _canvasGroup: {fileID: 4037718134316791169}
+  _fadeTime: 1
+  _showAlpha: 1
+  _hideAlpha: 0
   _map: {fileID: 3150141145063526497}
   _picture: {fileID: 8775514233597604537}
+--- !u!114 &2959788233671170794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4699135992707920988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af02f34ab5f4df1a5cbfb978aa8cdaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &688320965587281873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,6 +455,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &4037718134316791169
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4699135992707920988}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &89804685878598545
 MonoBehaviour:
   m_ObjectHideFlags: 0

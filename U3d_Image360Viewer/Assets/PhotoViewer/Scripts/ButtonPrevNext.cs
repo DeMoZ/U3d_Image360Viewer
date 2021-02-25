@@ -10,7 +10,7 @@ namespace PhotoViewer.Scripts
     [RequireComponent(typeof(Routines))]
     public class ButtonPrevNext : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private UnityEvent OnClick;
+        [SerializeField] private UnityEvent OnClick = null;
 
         [SerializeField] private float _defaultAlpha = 0;
         [SerializeField] private float _hoverAlpha = 0.1f;

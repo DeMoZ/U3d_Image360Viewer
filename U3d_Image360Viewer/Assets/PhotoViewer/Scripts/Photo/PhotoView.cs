@@ -6,8 +6,8 @@ namespace PhotoViewer.Scripts.Photo
 {
     public class PhotoView : MonoBehaviour, IPhotoView
     {
-        [SerializeField] private Image _image;
-        [SerializeField] private PhotoMap _photoMap;
+        [SerializeField] private Image _image = null;
+        [SerializeField] private PhotoMap _photoMap = null;
 
         private RectTransform _transform;
 
@@ -16,7 +16,7 @@ namespace PhotoViewer.Scripts.Photo
         private Vector2? _defaultImageSize;
 
         private event Action OnChange;
-
+ 
         private Vector2 ViewerSize
         {
             get
@@ -49,7 +49,10 @@ namespace PhotoViewer.Scripts.Photo
             _imageTransform = _image.GetComponent<RectTransform>();
         }
 
-        public void ShowImage(Sprite sprite)
+         public void ShowMap(bool show) => 
+             _photoMap.Show(show);
+
+         public void ShowImage(Sprite sprite)
         {
             Clear();
             _image.sprite = sprite;
@@ -115,7 +118,7 @@ namespace PhotoViewer.Scripts.Photo
             else
                 newPosition.y = 0;
 
-            _imageTransform.localPosition = (Vector3)newPosition;
+            _imageTransform.localPosition = (Vector3) newPosition;
 
             _photoMap.SetPosition(newPosition, ImageSize, ViewerSize);
 

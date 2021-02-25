@@ -9,15 +9,15 @@ namespace PhotoViewer.Scripts
 {
     public class PhotoViewer : MonoBehaviour
     {
-        [SerializeField] private PanoramaView _panoramaView;
-        [SerializeField] private PhotoView _photoView;
-        [SerializeField] private GameObject _btnNext;
-        [SerializeField] private GameObject _btnPrev;
-        [SerializeField] private ResetButton _btnReset;
-        [SerializeField] private Sprite _imageDefault;
-        [SerializeField] private Text _imageName;
-        [SerializeField] private Text _imageDate;
-        [SerializeField] private Slider _zoomSlider;
+        [SerializeField] private PanoramaView _panoramaView = null;
+        [SerializeField] private PhotoView _photoView = null;
+        [SerializeField] private GameObject _btnNext = null;
+        [SerializeField] private GameObject _btnPrev = null;
+        [SerializeField] private ResetButton _btnReset = null;
+        [SerializeField] private Sprite _imageDefault = null;
+        [SerializeField] private Text _imageName = null;
+        [SerializeField] private Text _imageDate = null;
+        [SerializeField] private Slider _zoomSlider = null;
 
         private List<ImageData> _images = new List<ImageData>();
         private int _currentPhoto { get; set; }
@@ -32,8 +32,18 @@ namespace PhotoViewer.Scripts
         {
             _zoomSlider.onValueChanged.AddListener(Zoom);
             _btnReset.Show(false);
-            _photoView.SubscribeMeOnChange(() => { _btnReset.Show(true); });
-            _panoramaView.SubscribeMeOnChange(() => { _btnReset.Show(true); });
+
+            _photoView.SubscribeMeOnChange(() =>
+            {
+                _btnReset.Show(true);
+                _photoView.ShowMap(true);
+            });
+
+            _panoramaView.SubscribeMeOnChange(() =>
+            {
+                _btnReset.Show(true);
+                _panoramaView.ShowMap(true);
+            });
         }
 
         public void CloseViewer()
@@ -99,10 +109,10 @@ namespace PhotoViewer.Scripts
                 _zoomSlider.value += value;
         }
 
-        public void SubscribeMeOnNewImage(Action callback) => 
+        public void SubscribeMeOnNewImage(Action callback) =>
             ShowNewImage += callback;
-        
-        public void UnSubscribeMeOnNewImage(Action callback) => 
+
+        public void UnSubscribeMeOnNewImage(Action callback) =>
             ShowNewImage -= callback;
 
         public void ResetCurrentImage() =>
@@ -111,6 +121,7 @@ namespace PhotoViewer.Scripts
         private void Zoom(float value)
         {
             _btnReset.Show(true);
+            _currentView?.ShowMap(true);
             _currentView?.Zoom(_zoomSlider.value);
         }
 
@@ -133,8 +144,6 @@ namespace PhotoViewer.Scripts
                 _panoramaView.gameObject.SetActive(false);
 
                 _currentView = _photoView;
-
-                _photoView.ShowImage(imageData.Sprite);
             }
             else
             {
@@ -144,10 +153,10 @@ namespace PhotoViewer.Scripts
                 _panoramaView.gameObject.SetActive(true);
 
                 _currentView = _panoramaView;
-
-                _panoramaView.ShowImage(imageData.Sprite);
             }
 
+            _currentView.ShowImage(imageData.Sprite);
+            _currentView.ShowMap(false);
             _btnReset.Show(false);
         }
 
@@ -166,5 +175,8 @@ namespace PhotoViewer.Scripts
 
         private void OnDestroy() =>
             _zoomSlider.onValueChanged.RemoveAllListeners();
+
+        private string GetImageDate() =>
+            _imageDate.text;
     }
 }

@@ -6,7 +6,7 @@ namespace PhotoViewer.Scripts
     [RequireComponent(typeof(Button))]
     public class ResetButton : MonoBehaviour
     {
-        [SerializeField] private Button _button;
+        [SerializeField] private Button _button = null;
 
         public void Show(bool show)
         {
