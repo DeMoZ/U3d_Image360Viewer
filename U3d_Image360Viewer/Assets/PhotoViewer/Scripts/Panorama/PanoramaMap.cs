@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts.Panorama
 {
-    public class PanoramaMap : MonoBehaviour
+    public class PanoramaMap : ViewerMap
     {
         [SerializeField] private Image _viewPort = null;
-        
+
         private RectTransform _viewPortT;
         private float _lastRotZ;
 
@@ -18,7 +18,7 @@ namespace PhotoViewer.Scripts.Panorama
         public void Clear()
         {
             _lastRotZ = 0;
-            _viewPortT.rotation=Quaternion.Euler(Vector3.zero);
+            _viewPortT.rotation = Quaternion.Euler(Vector3.zero);
         }
 
         public void OnRotate(Vector2 deltaRotation)

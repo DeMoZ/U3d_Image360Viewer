@@ -32,8 +32,18 @@ namespace PhotoViewer.Scripts
         {
             _zoomSlider.onValueChanged.AddListener(Zoom);
             _btnReset.Show(false);
-            _photoView.SubscribeMeOnChange(() => { _btnReset.Show(true); });
-            _panoramaView.SubscribeMeOnChange(() => { _btnReset.Show(true); });
+
+            _photoView.SubscribeMeOnChange(() =>
+            {
+                _btnReset.Show(true);
+                _photoView.ShowMap(true);
+            });
+
+            _panoramaView.SubscribeMeOnChange(() =>
+            {
+                _btnReset.Show(true);
+                _panoramaView.ShowMap(true);
+            });
         }
 
         public void CloseViewer()
@@ -111,6 +121,7 @@ namespace PhotoViewer.Scripts
         private void Zoom(float value)
         {
             _btnReset.Show(true);
+            _currentView?.ShowMap(true);
             _currentView?.Zoom(_zoomSlider.value);
         }
 
@@ -133,8 +144,6 @@ namespace PhotoViewer.Scripts
                 _panoramaView.gameObject.SetActive(false);
 
                 _currentView = _photoView;
-
-                _photoView.ShowImage(imageData.Sprite);
             }
             else
             {
@@ -144,10 +153,10 @@ namespace PhotoViewer.Scripts
                 _panoramaView.gameObject.SetActive(true);
 
                 _currentView = _panoramaView;
-
-                _panoramaView.ShowImage(imageData.Sprite);
             }
 
+            _currentView.ShowImage(imageData.Sprite);
+            _currentView.ShowMap(false);
             _btnReset.Show(false);
         }
 
