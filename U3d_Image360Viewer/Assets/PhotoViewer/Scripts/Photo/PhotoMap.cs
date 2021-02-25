@@ -2,10 +2,10 @@
 
 namespace PhotoViewer.Scripts.Photo
 {
-    public class PhotoMap : MonoBehaviour
+    public class PhotoMap : ViewerMap
     {
-        [SerializeField] private RectTransform _map = null;
-        [SerializeField] private RectTransform _picture = null;
+        [SerializeField] private RectTransform _map = default;
+        [SerializeField] private RectTransform _picture = default;
         private RectTransform _transform;
 
         private Vector2 _photoMapSize

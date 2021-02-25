@@ -16,7 +16,7 @@ namespace PhotoViewer.Scripts.Photo
         private Vector2? _defaultImageSize;
 
         private event Action OnChange;
-
+ 
         private Vector2 ViewerSize
         {
             get
@@ -31,7 +31,7 @@ namespace PhotoViewer.Scripts.Photo
             get
             {
                 var rect = _imageTransform.rect;
-                var angle = (int)_imageTransform.rotation.eulerAngles.z;
+                var angle = (int) _imageTransform.rotation.eulerAngles.z;
                 Vector2 result;
 
                 if (angle == 0 || angle == 180)
@@ -49,7 +49,10 @@ namespace PhotoViewer.Scripts.Photo
             _imageTransform = _image.GetComponent<RectTransform>();
         }
 
-        public void ShowImage(Sprite sprite)
+         public void ShowMap(bool show) => 
+             _photoMap.Show(show);
+
+         public void ShowImage(Sprite sprite)
         {
             Clear();
             _image.sprite = sprite;
@@ -63,7 +66,7 @@ namespace PhotoViewer.Scripts.Photo
             if (_defaultImageSize == null)
                 return;
 
-            _imageTransform.sizeDelta = (Vector2)(_defaultImageSize + _defaultImageSize * value * 10);
+            _imageTransform.sizeDelta = (Vector2) (_defaultImageSize + _defaultImageSize * value * 10);
             _photoMap.SetSize(ImageSize, ViewerSize);
         }
 
@@ -115,7 +118,7 @@ namespace PhotoViewer.Scripts.Photo
             else
                 newPosition.y = 0;
 
-            _imageTransform.localPosition = (Vector3)newPosition;
+            _imageTransform.localPosition = (Vector3) newPosition;
 
             _photoMap.SetPosition(newPosition, ImageSize, ViewerSize);
 

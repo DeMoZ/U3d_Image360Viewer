@@ -74,6 +74,9 @@ namespace PhotoViewer.Scripts.Panorama
                 OnChange?.Invoke();
         }
 
+        public void ShowMap(bool show) => 
+            _panoramaMap.Show(show);
+
         private void SetIcon()
         {
             _iconColor = _icon360.color;

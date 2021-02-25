@@ -6,8 +6,10 @@ namespace PhotoViewer.Scripts
     public interface IPhotoView
     {
         void Zoom(float value);
-        void Clear();
         void ApplyInput(Vector2 deltaPosition);
+        void ShowMap(bool show);
+        void ShowImage(Sprite imageDataSprite);
+        void Clear();
         void SubscribeMeOnChange(Action callback);
         void UnSubscribeMeOnChange(Action callback);
     }
