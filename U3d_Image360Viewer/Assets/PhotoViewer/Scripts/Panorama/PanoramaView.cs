@@ -33,12 +33,6 @@ namespace PhotoViewer.Scripts.Panorama
 
         private event Action OnChange;
 
-        private enum Direction
-        {
-            Horizontal,
-            Vertical,
-        }
-
         private void Awake()
         {
             _routines = GetComponent<Routines>();
@@ -74,7 +68,7 @@ namespace PhotoViewer.Scripts.Panorama
                 OnChange?.Invoke();
         }
 
-        public void ShowMap(bool show) => 
+        public void ShowMap(bool show) =>
             _panoramaMap.Show(show);
 
         private void SetIcon()
@@ -90,6 +84,7 @@ namespace PhotoViewer.Scripts.Panorama
         public void Zoom(float value)
         {
             _camera.fieldOfView = value * 123;
+            _cameraR.SetClamp(89 - _camera.fieldOfView / 2);
             _panoramaMap.SetViewPort(_camera.fieldOfView);
         }
 
