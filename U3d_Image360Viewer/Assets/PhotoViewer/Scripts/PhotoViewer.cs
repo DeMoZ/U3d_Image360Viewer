@@ -9,15 +9,17 @@ namespace PhotoViewer.Scripts
 {
     public class PhotoViewer : MonoBehaviour
     {
-        [SerializeField] private PanoramaView _panoramaView = null;
-        [SerializeField] private PhotoView _photoView = null;
-        [SerializeField] private GameObject _btnNext = null;
-        [SerializeField] private GameObject _btnPrev = null;
-        [SerializeField] private ResetButton _btnReset = null;
-        [SerializeField] private Sprite _imageDefault = null;
-        [SerializeField] private Text _imageName = null;
-        [SerializeField] private Text _imageDate = null;
-        [SerializeField] private Slider _zoomSlider = null;
+        [SerializeField] private PanoramaView _panoramaView = default;
+        [SerializeField] private PhotoView _photoView = default;
+        [SerializeField] private GameObject _btnNext = default;
+        [SerializeField] private GameObject _btnPrev = default;
+        [SerializeField] private GameObject _btnRotLeft = default;
+        [SerializeField] private GameObject _btnRotRight = default;
+        [SerializeField] private ResetButton _btnReset = default;
+        [SerializeField] private Sprite _imageDefault = default;
+        [SerializeField] private Text _imageName = default;
+        [SerializeField] private Text _imageDate = default;
+        [SerializeField] private Slider _zoomSlider = default;
 
         private List<ImageData> _images = new List<ImageData>();
         private int _currentPhoto { get; set; }
@@ -90,14 +92,12 @@ namespace PhotoViewer.Scripts
         public void NextImage()
         {
             _currentPhoto = (++_currentPhoto > _images.Count - 1) ? 0 : _currentPhoto;
-
             ShowImage(_images[_currentPhoto]);
         }
 
         public void PrevImage()
         {
             _currentPhoto = (_currentPhoto <= 0) ? _images.Count - 1 : _currentPhoto - 1;
-
             ShowImage(_images[_currentPhoto]);
         }
 
@@ -142,7 +142,7 @@ namespace PhotoViewer.Scripts
                 ResetPhotoZoom();
                 _photoView.gameObject.SetActive(true);
                 _panoramaView.gameObject.SetActive(false);
-
+                ActivateRotateButtons(true);
                 _currentView = _photoView;
             }
             else
@@ -151,7 +151,7 @@ namespace PhotoViewer.Scripts
                 ResetPanoramaZoom(0.5f);
                 _photoView.gameObject.SetActive(false);
                 _panoramaView.gameObject.SetActive(true);
-
+                ActivateRotateButtons(false);
                 _currentView = _panoramaView;
             }
 
@@ -176,7 +176,10 @@ namespace PhotoViewer.Scripts
         private void OnDestroy() =>
             _zoomSlider.onValueChanged.RemoveAllListeners();
 
-        private string GetImageDate() =>
-            _imageDate.text;
+        private void ActivateRotateButtons(bool activate)
+        {
+            _btnRotLeft.SetActive(activate);
+            _btnRotRight.SetActive(activate);
+        }
     }
 }

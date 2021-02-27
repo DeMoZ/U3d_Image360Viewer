@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 880860666575419415}
   - component: {fileID: 7858628167001511602}
   m_Layer: 5
-  m_Name: RotateLeftBtn (1)
+  m_Name: RotateLeftBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -333,7 +333,7 @@ GameObject:
   - component: {fileID: 2511701779627668646}
   - component: {fileID: 7856364377110990535}
   m_Layer: 5
-  m_Name: RotateRightBtn (1)
+  m_Name: RotateRightBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1410,6 +1410,8 @@ MonoBehaviour:
   _photoView: {fileID: 6187132651290733224}
   _btnNext: {fileID: 2606391358566567147}
   _btnPrev: {fileID: 2606391359472960952}
+  _btnRotLeft: {fileID: 1201456871590235490}
+  _btnRotRight: {fileID: 1976832313039051321}
   _btnReset: {fileID: 1055339418312620272}
   _imageDefault: {fileID: 21300000, guid: c509896ec7961154296f5fa574d9646b, type: 3}
   _imageName: {fileID: 2606391359178018898}
