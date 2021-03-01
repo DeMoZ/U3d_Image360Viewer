@@ -11,8 +11,6 @@ namespace PhotoViewer.Scripts
     {
         [SerializeField] private PanoramaView _panoramaView = default;
         [SerializeField] private PhotoView _photoView = default;
-        [SerializeField] private GameObject _btnNext = default;
-        [SerializeField] private GameObject _btnPrev = default;
         [SerializeField] private GameObject _btnRotLeft = default;
         [SerializeField] private GameObject _btnRotRight = default;
         [SerializeField] private ResetButton _btnReset = default;
@@ -67,8 +65,6 @@ namespace PhotoViewer.Scripts
             _images.Clear();
 
             _currentImageData = new ImageData();
-            _btnPrev.SetActive(false);
-            _btnNext.SetActive(false);
             _panoramaView.Clear();
             _photoView.Clear();
             _photoView.ShowImage(_imageDefault);
