@@ -45,7 +45,7 @@ The folder structure:
     <code>public ImageData Data;</code>
 <p>
 
-    <code>public List&lt;ImageData> Datas;</code>
+<code>public List<ImageData> Datas;</code>
 <p>
 <code>	public PhotoViewer Viewer;</code>
 <p>
