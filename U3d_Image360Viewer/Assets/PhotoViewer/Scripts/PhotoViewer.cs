@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PhotoViewer.Scripts.Gallery;
 using PhotoViewer.Scripts.Panorama;
 using PhotoViewer.Scripts.Photo;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace PhotoViewer.Scripts
 {
     public class PhotoViewer : MonoBehaviour
     {
+        [SerializeField] private GalleryView _galleryView = default;
         [SerializeField] private PanoramaView _panoramaView = default;
         [SerializeField] private PhotoView _photoView = default;
         [SerializeField] private GameObject _btnRotLeft = default;
@@ -65,6 +67,7 @@ namespace PhotoViewer.Scripts
             _images.Clear();
 
             _currentImageData = new ImageData();
+            _galleryView.Clear();
             _panoramaView.Clear();
             _photoView.Clear();
             _photoView.ShowImage(_imageDefault);
@@ -76,6 +79,12 @@ namespace PhotoViewer.Scripts
         {
             gameObject.SetActive(true);
 
+            if (_galleryView)
+            {
+                _galleryView.Init(_images);
+                _galleryView.Show();
+            }
+            
             if (_images != null && _images.Count > 0)
             {
                 _currentPhoto = 0;
