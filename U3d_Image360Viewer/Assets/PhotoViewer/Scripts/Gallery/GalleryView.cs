@@ -1,8 +1,7 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts.Gallery
 {
@@ -11,40 +10,48 @@ namespace PhotoViewer.Scripts.Gallery
         [SerializeField] private RectTransform _content = default;
         [SerializeField] private GalleryTile _galleryTilePrefab = default;
 
+        public event Action<int> OnImageSelect;
+        
         private Coroutine _applySizeRoutine;
 
         public void Clear()
         {
-            //   throw new NotImplementedException();
-
             if (_applySizeRoutine != null)
             {
                 StopCoroutine(_applySizeRoutine);
                 _applySizeRoutine = null;
             }
-        }
 
+            foreach (RectTransform child in _content) 
+                Destroy(child.gameObject);
+        }
 
         public void Init(List<ImageData> imageDatas)
         {
-            foreach (var imageData in imageDatas)
+            for (var i = 0; i < imageDatas.Count; i++)
             {
                 var go = Instantiate(_galleryTilePrefab, Vector3.zero, Quaternion.identity, _content);
                 var taleT = go.GetComponent<RectTransform>();
 
-                go.Image.sprite = imageData.Sprite;
+                go.Image.sprite = imageDatas[i].Sprite;
                 var imageT = go.Image.GetComponent<RectTransform>();
-                var relative = imageData.Sprite.rect.width / imageData.Sprite.rect.height;
+                var relative = imageDatas[i].Sprite.rect.width / imageDatas[i].Sprite.rect.height;
 
-                _applySizeRoutine = StartCoroutine(ApplySize(imageT, taleT, relative));
+                go.Number = i;
+                go.OnClick += TileClick;
 
                 if (go.Name)
-                    go.Name.text = imageData.Name;
+                    go.Name.text = imageDatas[i].Name;
 
                 if (go.Date)
-                    go.Date.text = imageData.Date;
+                    go.Date.text = imageDatas[i].Date;
+                
+                _applySizeRoutine = StartCoroutine(ApplySize(imageT, taleT, relative));
             }
         }
+
+        private void TileClick(int number) => 
+            OnImageSelect?.Invoke(number);
 
         private IEnumerator ApplySize(RectTransform imageT, RectTransform taleT, float relative)
         {
@@ -56,11 +63,6 @@ namespace PhotoViewer.Scripts.Gallery
                 imageT.sizeDelta = new Vector2(taleT.rect.height, taleT.rect.height * (2 - relative));
 
             _applySizeRoutine = null;
-        }
-
-        public void Show()
-        {
-            //     throw new NotImplementedException();
         }
     }
 }

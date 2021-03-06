@@ -1,13 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts.Gallery
 {
-    public class GalleryTile : MonoBehaviour
+    public class GalleryTile : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] private Image _image;
         [SerializeField] private Text _name;
         [SerializeField] private Text _date;
+
+        public event Action<int> OnClick;
+        public int Number { get; set; }
 
         public Image Image
         {
@@ -26,5 +31,8 @@ namespace PhotoViewer.Scripts.Gallery
             get => _date;
             set => _date = value;
         }
+
+        public void OnPointerClick(PointerEventData eventData) => 
+            OnClick?.Invoke(Number);
     }
 }
