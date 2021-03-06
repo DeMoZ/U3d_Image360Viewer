@@ -8,9 +8,6 @@ namespace PhotoViewer.Scripts
         void Zoom(float value);
         void ApplyInput(Vector2 deltaPosition);
         void ShowMap(bool show);
-        void ShowImage(Sprite imageDataSprite);
-        void Clear();
-        void SubscribeMeOnChange(Action callback);
-        void UnSubscribeMeOnChange(Action callback);
+        void Show(ImageData imageData);
     }
 }
