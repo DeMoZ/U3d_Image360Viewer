@@ -6,7 +6,9 @@ namespace PhotoViewer.Scripts.Photo
 {
     public class PhotoView : MonoBehaviour, IPhotoView
     {
+        [SerializeField] private Text _name=default;
         [SerializeField] private Image _image = null;
+        [SerializeField] private Sprite _defaultImage = null;
         [SerializeField] private PhotoMap _photoMap = null;
 
         private RectTransform _transform;
@@ -52,12 +54,13 @@ namespace PhotoViewer.Scripts.Photo
          public void ShowMap(bool show) => 
              _photoMap.Show(show);
 
-         public void ShowImage(Sprite sprite)
+         public void Show(ImageData imageData)
         {
             Clear();
-            _image.sprite = sprite;
+            _name.text = imageData.Name;
+            _image.sprite = imageData.Sprite;
             _photoMap.Clear();
-            RescalePhoto(sprite);
+            RescalePhoto(imageData.Sprite);
             _photoMap.SetSize(ImageSize, ViewerSize);
         }
 
@@ -130,6 +133,7 @@ namespace PhotoViewer.Scripts.Photo
         {
             var euler = _imageTransform.rotation.eulerAngles;
             _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, 0);
+            _image.sprite = _defaultImage;
         }
 
         public void SubscribeMeOnChange(Action callback) =>

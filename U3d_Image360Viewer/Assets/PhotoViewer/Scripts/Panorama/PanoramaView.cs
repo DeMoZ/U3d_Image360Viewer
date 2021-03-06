@@ -7,6 +7,7 @@ namespace PhotoViewer.Scripts.Panorama
     [RequireComponent(typeof(Routines))]
     public class PanoramaView : MonoBehaviour, IPhotoView
     {
+        [SerializeField] private Text _name;
         [SerializeField] private PanoramaRotator _panoramaCameraPrefab = null;
         [SerializeField] private GameObject _panoramaSpherePrefab = null;
         [SerializeField] private PanoramaMap _panoramaMap = null;
@@ -44,10 +45,12 @@ namespace PhotoViewer.Scripts.Panorama
             OnRotate += _panoramaMap.OnRotate;
         }
 
-        public void ShowImage(Sprite sprite)
+        public void Show(ImageData imageData)
         {
             Clear();
-            material.mainTexture = sprite.TextureFromSprite();
+            
+            _name.text = imageData.Name;
+            material.mainTexture = imageData.Sprite.TextureFromSprite();
 
             if (_animateIcon360)
                 AnimateIcon360();
@@ -55,6 +58,7 @@ namespace PhotoViewer.Scripts.Panorama
 
         public void Clear()
         {
+            _name.text = string.Empty;
             _cameraR.transform.rotation = Quaternion.Euler(Vector3.zero);
             _panoramaMap.Clear();
             Zoom(0.5f);

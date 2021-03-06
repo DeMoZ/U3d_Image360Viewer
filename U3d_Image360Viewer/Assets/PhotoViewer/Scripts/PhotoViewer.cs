@@ -18,8 +18,6 @@ namespace PhotoViewer.Scripts
         [SerializeField] private GameObject _btnRotRight = default;
         [SerializeField] private GameObject _btnReturn = default;
         [SerializeField] private ResetButton _btnReset = default;
-        [SerializeField] private Sprite _imageDefault = default;
-        [SerializeField] private Text _imageName = default;
         [SerializeField] private Text _imageDate = default;
         [SerializeField] private Slider _zoomSlider = default;
 
@@ -73,7 +71,6 @@ namespace PhotoViewer.Scripts
             _galleryView.Clear();
             _panoramaView.Clear();
             _photoView.Clear();
-            _photoView.ShowImage(_imageDefault);
             ResetZoom();
             _btnReset.Show(false);
         }
@@ -107,8 +104,6 @@ namespace PhotoViewer.Scripts
             _btnReturn.SetActive(false);
             _bottomPanel.gameObject.SetActive(false);
             _galleryView.gameObject.SetActive(true);
-
-            _imageName.text = Globals.GalleryViewHeader;
         }
 
         public void NextImage()
@@ -169,7 +164,6 @@ namespace PhotoViewer.Scripts
 
             ShowNewImage?.Invoke();
 
-            _imageName.text = imageData.Name;
             _imageDate.text = imageData.Date;
             // var dt = DateTime.Parse(list[n].Key);
             // _imageName.text = dt.ToString("dd MMMM yyyy", new CultureInfo("ru-RU")).ToLower();
@@ -193,7 +187,7 @@ namespace PhotoViewer.Scripts
                 _currentView = _panoramaView;
             }
 
-            _currentView.ShowImage(imageData.Sprite);
+            _currentView.Show(imageData);
             _currentView.ShowMap(false);
             _btnReset.Show(false);
         }

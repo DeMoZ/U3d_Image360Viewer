@@ -2,11 +2,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts.Gallery
 {
     public class GalleryView : MonoBehaviour
     {
+        [SerializeField] private Text _name;
         [SerializeField] private RectTransform _content = default;
         [SerializeField] private GalleryTile _galleryTilePrefab = default;
 
@@ -28,6 +30,8 @@ namespace PhotoViewer.Scripts.Gallery
 
         public void Init(List<ImageData> imageDatas)
         {
+            _name.text = Globals.GalleryViewHeader;
+            
             for (var i = 0; i < imageDatas.Count; i++)
             {
                 var go = Instantiate(_galleryTilePrefab, Vector3.zero, Quaternion.identity, _content);
