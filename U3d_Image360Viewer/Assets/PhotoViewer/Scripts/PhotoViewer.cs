@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PhotoViewer.Scripts.Gallery;
 using PhotoViewer.Scripts.Panorama;
 using PhotoViewer.Scripts.Photo;
 using UnityEngine;
@@ -9,10 +10,13 @@ namespace PhotoViewer.Scripts
 {
     public class PhotoViewer : MonoBehaviour
     {
+        [SerializeField] private GalleryView _galleryView = default;
         [SerializeField] private PanoramaView _panoramaView = default;
         [SerializeField] private PhotoView _photoView = default;
+        [SerializeField] private GameObject _bottomPanel = default;
         [SerializeField] private GameObject _btnRotLeft = default;
         [SerializeField] private GameObject _btnRotRight = default;
+        [SerializeField] private GameObject _btnReturn = default;
         [SerializeField] private ResetButton _btnReset = default;
         [SerializeField] private Sprite _imageDefault = default;
         [SerializeField] private Text _imageName = default;
@@ -32,7 +36,8 @@ namespace PhotoViewer.Scripts
         {
             _zoomSlider.onValueChanged.AddListener(Zoom);
             _btnReset.Show(false);
-
+            _btnReturn.SetActive(false);
+            
             _photoView.SubscribeMeOnChange(() =>
             {
                 _btnReset.Show(true);
@@ -65,10 +70,11 @@ namespace PhotoViewer.Scripts
             _images.Clear();
 
             _currentImageData = new ImageData();
+            _galleryView.Clear();
             _panoramaView.Clear();
             _photoView.Clear();
             _photoView.ShowImage(_imageDefault);
-            ResetPhotoZoom();
+            ResetZoom();
             _btnReset.Show(false);
         }
 
@@ -76,13 +82,33 @@ namespace PhotoViewer.Scripts
         {
             gameObject.SetActive(true);
 
-            if (_images != null && _images.Count > 0)
+            if (_galleryView)
             {
-                _currentPhoto = 0;
-                ShowImage(_images[0]);
+                EnableGalleryViewState();
+                _galleryView.Init(_images);
+                _galleryView.OnImageSelect += ShowImage;
             }
             else
-                Clear();
+            {
+                if (_images != null && _images.Count > 0)
+                {
+                    _currentPhoto = 0;
+                    ShowImage(_images[0]);
+                }
+                else
+                    Clear();
+            }
+        }
+
+        private void EnableGalleryViewState()
+        {
+            _panoramaView.gameObject.SetActive(false);
+            _photoView.gameObject.SetActive(false);
+            _btnReturn.SetActive(false);
+            _bottomPanel.gameObject.SetActive(false);
+            _galleryView.gameObject.SetActive(true);
+
+            _imageName.text = Globals.GalleryViewHeader;
         }
 
         public void NextImage()
@@ -99,11 +125,17 @@ namespace PhotoViewer.Scripts
 
         public void SetZoomSlider(float value)
         {
-            if (_currentView.GetType() == typeof(PhotoView))
-                _zoomSlider.value -= value;
-            else
-                _zoomSlider.value += value;
+            if (_currentView != null)
+            {
+                if (_currentView.GetType() == typeof(PhotoView))
+                    _zoomSlider.value -= value;
+                else
+                    _zoomSlider.value += value;
+            }
         }
+
+        public void Return() =>
+            EnableGalleryViewState();
 
         public void SubscribeMeOnNewImage(Action callback) =>
             ShowNewImage += callback;
@@ -121,6 +153,16 @@ namespace PhotoViewer.Scripts
             _currentView?.Zoom(_zoomSlider.value);
         }
 
+        private void ShowImage(int number)
+        {
+            _galleryView.gameObject.SetActive(false);
+            _bottomPanel.gameObject.SetActive(true);
+            _btnReturn.SetActive(true);
+
+            _currentPhoto = number;
+            ShowImage(_images[number]);
+        }
+
         private void ShowImage(ImageData imageData)
         {
             _currentImageData = imageData;
@@ -135,7 +177,7 @@ namespace PhotoViewer.Scripts
             if (IsPhoto(imageData.Sprite))
             {
                 _photoView.GetComponent<ViewerInput>().Clear();
-                ResetPhotoZoom();
+                ResetZoom();
                 _photoView.gameObject.SetActive(true);
                 _panoramaView.gameObject.SetActive(false);
                 ActivateRotateButtons(true);
@@ -144,7 +186,7 @@ namespace PhotoViewer.Scripts
             else
             {
                 _panoramaView.GetComponent<ViewerInput>().Clear();
-                ResetPanoramaZoom(0.5f);
+                ResetZoom(0.5f);
                 _photoView.gameObject.SetActive(false);
                 _panoramaView.gameObject.SetActive(true);
                 ActivateRotateButtons(false);
@@ -156,15 +198,12 @@ namespace PhotoViewer.Scripts
             _btnReset.Show(false);
         }
 
-        private void ResetPhotoZoom()
+        private void ResetZoom(float value = 0)
         {
             _zoomSlider.onValueChanged.RemoveListener(Zoom);
-            _zoomSlider.value = 0;
+            _zoomSlider.value = value;
             _zoomSlider.onValueChanged.AddListener(Zoom);
         }
-
-        private void ResetPanoramaZoom(float value) =>
-            _zoomSlider.value = value;
 
         private bool IsPhoto(Sprite sprite) =>
             sprite.texture.width / sprite.texture.height < 1.6f;

@@ -10,7 +10,7 @@ namespace PhotoViewer.Scripts
         {
             StopAllCoroutines();
         }
-        
+
         public void LerpFloat(float from, float to, float time, Action<float> callbackOnLerp = null,
             Action callbackOnEnd = null) =>
             StartCoroutine(LerpRoutineFloat(@from, to, time, callbackOnLerp, callbackOnEnd));
