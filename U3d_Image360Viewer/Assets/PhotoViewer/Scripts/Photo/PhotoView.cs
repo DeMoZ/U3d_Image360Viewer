@@ -1,24 +1,25 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts.Photo
 {
-    public class PhotoView : MonoBehaviour, IPhotoView
+    public class PhotoView : AbstractView, IView
     {
-        [SerializeField] private Text _name=default;
         [SerializeField] private Image _image = null;
         [SerializeField] private Sprite _defaultImage = null;
+        
         [SerializeField] private PhotoMap _photoMap = null;
 
+        [SerializeField] private GameObject _btnRotLeft = default;
+        [SerializeField] private GameObject _btnRotRight = default;
+        
         private RectTransform _transform;
 
         private RectTransform _imageTransform;
 
         private Vector2? _defaultImageSize;
 
-        private event Action OnChange;
- 
+
         private Vector2 ViewerSize
         {
             get
@@ -49,25 +50,35 @@ namespace PhotoViewer.Scripts.Photo
         {
             _transform = GetComponent<RectTransform>();
             _imageTransform = _image.GetComponent<RectTransform>();
+
+            OnChange += () => { ShowMap(true); };
         }
 
-         public void ShowMap(bool show) => 
-             _photoMap.Show(show);
+        protected override void ShowMap(bool show) =>
+            _photoMap.Show(show);
 
-         public void Show(ImageData imageData)
+        protected override  void ShowData(ImageData imageData)
         {
             Clear();
+
+            _zoomSlider.onValueChanged.AddListener(Zoom);
+            _btnReset.Show(false);
+
             _name.text = imageData.Name;
+            _date.text = imageData.Date;
             _image.sprite = imageData.Sprite;
-            _photoMap.Clear();
+            
             RescalePhoto(imageData.Sprite);
             _photoMap.SetSize(ImageSize, ViewerSize);
         }
-
-        public void Zoom(float value)
+        
+        public override void Zoom(float value)
         {
             if (_defaultImageSize == null)
                 return;
+
+            _btnReset.Show(true);
+            ShowMap(true);
 
             _imageTransform.sizeDelta = (Vector2) (_defaultImageSize + _defaultImageSize * value * 10);
             _photoMap.SetSize(ImageSize, ViewerSize);
@@ -91,7 +102,7 @@ namespace PhotoViewer.Scripts.Photo
             OnChange?.Invoke();
         }
 
-        public void ApplyInput(Vector2 deltaPosition)
+        public override void ApplyInput(Vector2 deltaPosition)
         {
             Vector2 newPosition = _imageTransform.localPosition;
 
@@ -134,13 +145,10 @@ namespace PhotoViewer.Scripts.Photo
             var euler = _imageTransform.rotation.eulerAngles;
             _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, 0);
             _image.sprite = _defaultImage;
+            _photoMap.Clear();
+
+            ResetZoom();
         }
-
-        public void SubscribeMeOnChange(Action callback) =>
-            OnChange += callback;
-
-        public void UnSubscribeMeOnChange(Action callback) =>
-            OnChange -= callback;
 
         private void RescalePhoto(Sprite sprite)
         {

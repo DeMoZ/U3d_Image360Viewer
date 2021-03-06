@@ -8,12 +8,12 @@ namespace PhotoViewer.Scripts.Gallery
 {
     public class GalleryView : MonoBehaviour
     {
-        [SerializeField] private Text _name;
+        [SerializeField] private Text _name = default;
         [SerializeField] private RectTransform _content = default;
         [SerializeField] private GalleryTile _galleryTilePrefab = default;
 
         public event Action<int> OnImageSelect;
-        
+
         private Coroutine _applySizeRoutine;
 
         public void Clear()
@@ -24,14 +24,14 @@ namespace PhotoViewer.Scripts.Gallery
                 _applySizeRoutine = null;
             }
 
-            foreach (RectTransform child in _content) 
+            foreach (RectTransform child in _content)
                 Destroy(child.gameObject);
         }
 
         public void Init(List<ImageData> imageDatas)
         {
             _name.text = Globals.GalleryViewHeader;
-            
+
             for (var i = 0; i < imageDatas.Count; i++)
             {
                 var go = Instantiate(_galleryTilePrefab, Vector3.zero, Quaternion.identity, _content);
@@ -49,12 +49,12 @@ namespace PhotoViewer.Scripts.Gallery
 
                 if (go.Date)
                     go.Date.text = imageDatas[i].Date;
-                
+
                 _applySizeRoutine = StartCoroutine(ApplySize(imageT, taleT, relative));
             }
         }
 
-        private void TileClick(int number) => 
+        private void TileClick(int number) =>
             OnImageSelect?.Invoke(number);
 
         private IEnumerator ApplySize(RectTransform imageT, RectTransform taleT, float relative)

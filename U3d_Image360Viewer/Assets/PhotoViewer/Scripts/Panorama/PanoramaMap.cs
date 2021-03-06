@@ -10,10 +10,8 @@ namespace PhotoViewer.Scripts.Panorama
         private RectTransform _viewPortT;
         private float _lastRotZ;
 
-        private void Awake()
-        {
+        private void Awake() => 
             _viewPortT = _viewPort.GetComponent<RectTransform>();
-        }
 
         public void Clear()
         {
