@@ -59,9 +59,7 @@ namespace PhotoViewer.Scripts.Photo
 
             _zoomSlider.onValueChanged.AddListener(Zoom);
             _btnReset.Show(false);
-
-            _name.text = imageData.Name;
-            _date.text = imageData.Date;
+            
             _image.sprite = imageData.Sprite;
 
             RescalePhoto(imageData.Sprite);

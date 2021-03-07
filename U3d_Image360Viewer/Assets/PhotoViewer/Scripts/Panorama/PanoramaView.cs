@@ -85,7 +85,7 @@ namespace PhotoViewer.Scripts.Panorama
 
         protected override void Zoom(float value)
         {
-            _btnReset.Show(true);
+            OnChange?.Invoke();
             ShowMap(true);
 
             _camera.fieldOfView = value * 123;

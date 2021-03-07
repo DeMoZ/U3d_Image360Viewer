@@ -37,6 +37,8 @@ namespace PhotoViewer.Scripts
         public void Show(ImageData imageData)
         {
             _currentData = imageData;
+            _name.text = imageData.Name;
+            _date.text = imageData.Date;
             ShowData(imageData);
             ShowMap(false);
             _btnReset.Show(false);
