@@ -16,9 +16,8 @@ namespace PhotoViewer.Scripts
         [SerializeField] private GameObject _btnReturn = default;
 
         private List<ImageData> _images = new List<ImageData>();
-        private int _currentPhoto { get; set; }
+        private int CurrentPhoto { get; set; }
 
-        private IView _currentView;
         private ImageData _currentImageData;
 
         private event Action ShowNewImage;
@@ -31,7 +30,6 @@ namespace PhotoViewer.Scripts
         {
             Clear();
             CloseImageViewer?.Invoke();
-
             gameObject.SetActive(false);
         }
 
@@ -53,8 +51,6 @@ namespace PhotoViewer.Scripts
 
         public void Show()
         {
-            gameObject.SetActive(true);
-
             if (_galleryView)
             {
                 EnableGalleryViewState();
@@ -65,13 +61,31 @@ namespace PhotoViewer.Scripts
             {
                 if (_images != null && _images.Count > 0)
                 {
-                    _currentPhoto = 0;
+                    CurrentPhoto = 0;
                     ShowImage(_images[0]);
                 }
                 else
                     Clear();
             }
         }
+
+        public void NextImage()
+        {
+            CurrentPhoto = (++CurrentPhoto > _images.Count - 1) ? 0 : CurrentPhoto;
+            ShowImage(_images[CurrentPhoto]);
+        }
+
+        public void PrevImage()
+        {
+            CurrentPhoto = (CurrentPhoto <= 0) ? _images.Count - 1 : CurrentPhoto - 1;
+            ShowImage(_images[CurrentPhoto]);
+        }
+
+        public void Return() =>
+            EnableGalleryViewState();
+
+        public void ResetCurrentImage() =>
+            ShowImage(_currentImageData);
 
         private void EnableGalleryViewState()
         {
@@ -81,37 +95,12 @@ namespace PhotoViewer.Scripts
             _galleryView.gameObject.SetActive(true);
         }
 
-        public void NextImage()
-        {
-            _currentPhoto = (++_currentPhoto > _images.Count - 1) ? 0 : _currentPhoto;
-            ShowImage(_images[_currentPhoto]);
-        }
-
-        public void PrevImage()
-        {
-            _currentPhoto = (_currentPhoto <= 0) ? _images.Count - 1 : _currentPhoto - 1;
-            ShowImage(_images[_currentPhoto]);
-        }
-
-
-        public void Return() =>
-            EnableGalleryViewState();
-
-        public void SubscribeMeOnNewImage(Action callback) =>
-            ShowNewImage += callback;
-
-        public void UnSubscribeMeOnNewImage(Action callback) =>
-            ShowNewImage -= callback;
-
-        public void ResetCurrentImage() =>
-            ShowImage(_currentImageData);
-
         private void ShowImage(int number)
         {
             _galleryView.gameObject.SetActive(false);
             _btnReturn.SetActive(true);
 
-            _currentPhoto = number;
+            CurrentPhoto = number;
             ShowImage(_images[number]);
         }
 
@@ -125,24 +114,17 @@ namespace PhotoViewer.Scripts
             {
                 _photoView.gameObject.SetActive(true);
                 _panoramaView.gameObject.SetActive(false);
-                _currentView = _photoView;
                 _photoView.Show(imageData);
             }
             else
             {
                 _photoView.gameObject.SetActive(false);
                 _panoramaView.gameObject.SetActive(true);
-                _currentView = _panoramaView;
                 _panoramaView.Show(imageData);
             }
         }
 
-
         private bool IsPhoto(Sprite sprite) =>
             sprite.texture.width / sprite.texture.height < 1.6f;
-    }
-
-    public interface IView
-    {
     }
 }

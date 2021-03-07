@@ -3,22 +3,18 @@ using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts.Photo
 {
-    public class PhotoView : AbstractView, IView
+    public class PhotoView : AbstractView
     {
         [SerializeField] private Image _image = null;
         [SerializeField] private Sprite _defaultImage = null;
-        
+
         [SerializeField] private PhotoMap _photoMap = null;
 
-        [SerializeField] private GameObject _btnRotLeft = default;
-        [SerializeField] private GameObject _btnRotRight = default;
-        
         private RectTransform _transform;
 
         private RectTransform _imageTransform;
 
         private Vector2? _defaultImageSize;
-
 
         private Vector2 ViewerSize
         {
@@ -46,18 +42,18 @@ namespace PhotoViewer.Scripts.Photo
             }
         }
 
-        private void Awake()
+        protected override void Awake()
         {
             _transform = GetComponent<RectTransform>();
             _imageTransform = _image.GetComponent<RectTransform>();
 
-            OnChange += () => { ShowMap(true); };
+            base.Awake();
         }
 
         protected override void ShowMap(bool show) =>
             _photoMap.Show(show);
 
-        protected override  void ShowData(ImageData imageData)
+        protected override void ShowData(ImageData imageData)
         {
             Clear();
 
@@ -67,18 +63,17 @@ namespace PhotoViewer.Scripts.Photo
             _name.text = imageData.Name;
             _date.text = imageData.Date;
             _image.sprite = imageData.Sprite;
-            
+
             RescalePhoto(imageData.Sprite);
             _photoMap.SetSize(ImageSize, ViewerSize);
         }
-        
-        public override void Zoom(float value)
+
+        protected override void Zoom(float value)
         {
             if (_defaultImageSize == null)
                 return;
 
-            _btnReset.Show(true);
-            ShowMap(true);
+            OnChange?.Invoke();
 
             _imageTransform.sizeDelta = (Vector2) (_defaultImageSize + _defaultImageSize * value * 10);
             _photoMap.SetSize(ImageSize, ViewerSize);

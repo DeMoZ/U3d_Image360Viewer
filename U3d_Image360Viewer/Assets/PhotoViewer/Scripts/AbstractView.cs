@@ -12,8 +12,8 @@ namespace PhotoViewer.Scripts
         [SerializeField] protected Text _date = default;
  
         public event Action OnShow;
-        public abstract void Zoom(float value);
 
+        protected abstract void Zoom(float value);
         public abstract void ApplyInput(Vector2 deltaPosition);
 
         protected Action OnChange;
@@ -21,19 +21,31 @@ namespace PhotoViewer.Scripts
 
         protected abstract void ShowData(ImageData imageData);
 
+        protected ImageData _currentData;
+
+        protected virtual void Awake()
+        {
+            OnChange += () => { ShowMap(true); };
+            OnChange += () => { _btnReset.Show(true); };
+        }
+
         public Slider ZoomSlider  { 
             get=>_zoomSlider;
             set=>_zoomSlider=value; 
         }
-        
+
         public void Show(ImageData imageData)
         {
+            _currentData = imageData;
             ShowData(imageData);
             ShowMap(false);
             _btnReset.Show(false);
             
             OnShow?.Invoke();
         }
+
+        public void Reset() => 
+            Show(_currentData);
 
         protected void ResetZoom(float value = 0)
         {

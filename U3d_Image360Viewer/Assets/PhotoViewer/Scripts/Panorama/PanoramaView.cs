@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace PhotoViewer.Scripts.Panorama
 {
     [RequireComponent(typeof(Routines))]
-    public class PanoramaView : AbstractView, IView
+    public class PanoramaView : AbstractView
     {
         [SerializeField] private PanoramaRotator _panoramaCameraPrefab = null;
         [SerializeField] private GameObject _panoramaSpherePrefab = null;
@@ -32,15 +32,15 @@ namespace PhotoViewer.Scripts.Panorama
         private Color _iconColor;
 
 
-        private void Awake()
+        protected override void Awake()
         {
             SetIcon();
             InstantiateObjects();
 
-            OnChange += () => { ShowMap(true); };
-
             OnRotate += _cameraR.OnRotate;
             OnRotate += _panoramaMap.OnRotate;
+            
+            base.Awake();
         }
 
         protected override void ShowData(ImageData imageData)
@@ -83,7 +83,7 @@ namespace PhotoViewer.Scripts.Panorama
             _localCenter = new Vector2(x, y);
         }
 
-        public override void Zoom(float value)
+        protected override void Zoom(float value)
         {
             _btnReset.Show(true);
             ShowMap(true);
