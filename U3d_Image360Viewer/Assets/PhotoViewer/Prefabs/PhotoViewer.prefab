@@ -611,6 +611,8 @@ MonoBehaviour:
   _panoramaView: {fileID: 4158951896867104229}
   _photoView: {fileID: 6187132651290733224}
   _btnReturn: {fileID: 4193080321615660369}
+  _btnPrev: {fileID: 2606391359472960952}
+  _btnNext: {fileID: 2606391358566567147}
 --- !u!1 &2606391359472960952
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,21 +1371,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2606391359218924206}
     m_Modifications:
-    - target: {fileID: 147695902047301572, guid: 2bdfa1f68e4064046bb0356b481a095f,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 147695902047301572, guid: 2bdfa1f68e4064046bb0356b481a095f,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 147695902047301572, guid: 2bdfa1f68e4064046bb0356b481a095f,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 264356981375649246, guid: 2bdfa1f68e4064046bb0356b481a095f,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

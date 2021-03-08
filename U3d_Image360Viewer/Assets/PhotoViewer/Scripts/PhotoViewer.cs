@@ -13,7 +13,10 @@ namespace PhotoViewer.Scripts
         [SerializeField] private PanoramaView _panoramaView = default;
 
         [SerializeField] private PhotoView _photoView = default;
+        
         [SerializeField] private GameObject _btnReturn = default;
+        [SerializeField] private GameObject _btnPrev = default;
+        [SerializeField] private GameObject _btnNext = default;
 
         private List<ImageData> _images = new List<ImageData>();
         private int CurrentPhoto { get; set; }
@@ -87,14 +90,22 @@ namespace PhotoViewer.Scripts
         {
             _panoramaView.gameObject.SetActive(false);
             _photoView.gameObject.SetActive(false);
-            _btnReturn.SetActive(false);
+            SetActiveButtons(false);
+
             _galleryView.gameObject.SetActive(true);
+        }
+
+        private void SetActiveButtons(bool active)
+        {
+            _btnReturn.SetActive(active);
+            _btnPrev.SetActive(active);
+            _btnNext.SetActive(active);
         }
 
         private void ShowImage(int number)
         {
             _galleryView.gameObject.SetActive(false);
-            _btnReturn.SetActive(true);
+            SetActiveButtons(true);
 
             CurrentPhoto = number;
             ShowImage(_images[number]);
