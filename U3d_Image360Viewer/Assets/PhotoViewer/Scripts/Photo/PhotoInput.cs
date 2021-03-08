@@ -2,15 +2,10 @@
 
 namespace PhotoViewer.Scripts.Photo
 {
-    [RequireComponent(typeof(IPhotoView))]
-    public class PhotoInput : ViewerInput
+    [RequireComponent(typeof(AbstractView))]
+    public class PhotoInput : AbstractInput
     {
-        private IPhotoView photoView;
-
-        private void Start() => 
-            photoView = GetComponent<IPhotoView>();
-
-        protected override void OnUpdate() => 
-            photoView.ApplyInput(_deltaPosition);
+        protected override void OnUpdate() =>
+            _view.ApplyInput(_deltaPosition);
     }
 }
