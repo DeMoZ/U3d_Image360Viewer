@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace PhotoViewer.Scripts
+namespace PhotoViewer.Scripts.Buttons
 {
     [RequireComponent(typeof(Button))]
     public class ResetButton : MonoBehaviour
@@ -11,7 +11,6 @@ namespace PhotoViewer.Scripts
         public void Show(bool show)
         {
             if (show == _button.interactable) return;
-
             _button.interactable = show;
         }
     }
