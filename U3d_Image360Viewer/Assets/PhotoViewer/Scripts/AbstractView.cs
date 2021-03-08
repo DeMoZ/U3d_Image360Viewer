@@ -1,4 +1,5 @@
 ﻿using System;
+using PhotoViewer.Scripts.Buttons;
 using UnityEngine;
 using UnityEngine.UI;
 

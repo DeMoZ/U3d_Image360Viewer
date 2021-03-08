@@ -1,10 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace PhotoViewer.Scripts
+namespace PhotoViewer.Scripts.Buttons
 {
     [RequireComponent(typeof(Image))]
     [RequireComponent(typeof(Routines))]
