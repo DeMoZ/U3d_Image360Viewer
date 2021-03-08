@@ -47,7 +47,9 @@ namespace PhotoViewer.Scripts.Panorama
         {
             Clear();
 
-            _name.text = imageData.Name;
+            _zoomSlider.onValueChanged.AddListener(Zoom);
+            _btnReset.Show(false);
+
             material.mainTexture = imageData.Sprite.TextureFromSprite();
 
             if (_animateIcon360)
@@ -59,7 +61,9 @@ namespace PhotoViewer.Scripts.Panorama
             _name.text = string.Empty;
             _cameraR.transform.rotation = Quaternion.Euler(Vector3.zero);
             _panoramaMap.Clear();
-            Zoom(0.5f);
+           
+           _zoomSlider.value = 0.5f;
+           Zoom(0.5f);
         }
 
         public override void ApplyInput(Vector2 deltaPosition)

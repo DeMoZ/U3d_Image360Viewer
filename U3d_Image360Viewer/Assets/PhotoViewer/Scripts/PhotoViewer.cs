@@ -20,16 +20,12 @@ namespace PhotoViewer.Scripts
 
         private ImageData _currentImageData;
 
-        private event Action ShowNewImage;
-        public event Action CloseImageViewer;
-
         private void Start() =>
             _btnReturn.SetActive(false);
 
         public void CloseViewer()
         {
             Clear();
-            CloseImageViewer?.Invoke();
             gameObject.SetActive(false);
         }
 
@@ -107,8 +103,6 @@ namespace PhotoViewer.Scripts
         private void ShowImage(ImageData imageData)
         {
             _currentImageData = imageData;
-
-            ShowNewImage?.Invoke();
 
             if (IsPhoto(imageData.Sprite))
             {
