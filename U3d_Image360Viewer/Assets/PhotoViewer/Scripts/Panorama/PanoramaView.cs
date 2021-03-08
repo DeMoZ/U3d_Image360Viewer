@@ -5,9 +5,8 @@ using UnityEngine.UI;
 namespace PhotoViewer.Scripts.Panorama
 {
     [RequireComponent(typeof(Routines))]
-    public class PanoramaView : MonoBehaviour, IPhotoView
+    public class PanoramaView : AbstractView
     {
-        [SerializeField] private Text _name;
         [SerializeField] private PanoramaRotator _panoramaCameraPrefab = null;
         [SerializeField] private GameObject _panoramaSpherePrefab = null;
         [SerializeField] private PanoramaMap _panoramaMap = null;
@@ -17,7 +16,7 @@ namespace PhotoViewer.Scripts.Panorama
         [SerializeField]
         private bool _animateIcon360 = true;
 
-        private Routines _routines;
+        [SerializeField] private Routines _routines = default;
 
         private RectTransform _icon360T;
         private GameObject _sphere;
@@ -32,24 +31,25 @@ namespace PhotoViewer.Scripts.Panorama
         private float _iconAnimateTime = 0.5f;
         private Color _iconColor;
 
-        private event Action OnChange;
 
-        private void Awake()
+        protected override void Awake()
         {
-            _routines = GetComponent<Routines>();
-
             SetIcon();
             InstantiateObjects();
 
             OnRotate += _cameraR.OnRotate;
             OnRotate += _panoramaMap.OnRotate;
+            
+            base.Awake();
         }
 
-        public void Show(ImageData imageData)
+        protected override void ShowData(ImageData imageData)
         {
             Clear();
-            
-            _name.text = imageData.Name;
+
+            _zoomSlider.onValueChanged.AddListener(Zoom);
+            _btnReset.Show(false);
+
             material.mainTexture = imageData.Sprite.TextureFromSprite();
 
             if (_animateIcon360)
@@ -61,10 +61,12 @@ namespace PhotoViewer.Scripts.Panorama
             _name.text = string.Empty;
             _cameraR.transform.rotation = Quaternion.Euler(Vector3.zero);
             _panoramaMap.Clear();
-            Zoom(0.5f);
+           
+           _zoomSlider.value = 0.5f;
+           Zoom(0.5f);
         }
 
-        public void ApplyInput(Vector2 deltaPosition)
+        public override void ApplyInput(Vector2 deltaPosition)
         {
             OnRotate?.Invoke(deltaPosition);
 
@@ -72,7 +74,7 @@ namespace PhotoViewer.Scripts.Panorama
                 OnChange?.Invoke();
         }
 
-        public void ShowMap(bool show) =>
+        protected override void ShowMap(bool show) =>
             _panoramaMap.Show(show);
 
         private void SetIcon()
@@ -85,18 +87,15 @@ namespace PhotoViewer.Scripts.Panorama
             _localCenter = new Vector2(x, y);
         }
 
-        public void Zoom(float value)
+        protected override void Zoom(float value)
         {
+            OnChange?.Invoke();
+            ShowMap(true);
+
             _camera.fieldOfView = value * 123;
             _cameraR.SetClamp(89 - _camera.fieldOfView / 2);
             _panoramaMap.SetViewPort(_camera.fieldOfView);
         }
-
-        public void SubscribeMeOnChange(Action callback) =>
-            OnChange += callback;
-
-        public void UnSubscribeMeOnChange(Action callback) =>
-            OnChange -= callback;
 
         private void AnimateIcon360()
         {
@@ -135,7 +134,7 @@ namespace PhotoViewer.Scripts.Panorama
             material = _sphere.GetComponent<Renderer>().material;
         }
 
-        private void OnDestroy()
+        private new void OnDestroy()
         {
             OnRotate -= _cameraR.OnRotate;
             OnRotate -= _panoramaMap.OnRotate;

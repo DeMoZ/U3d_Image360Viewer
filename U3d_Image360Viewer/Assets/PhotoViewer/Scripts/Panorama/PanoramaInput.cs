@@ -2,15 +2,10 @@
 
 namespace PhotoViewer.Scripts.Panorama
 {
-    [RequireComponent(typeof(IPhotoView))]
-    public class PanoramaInput : ViewerInput
+    [RequireComponent(typeof(AbstractView))]
+    public class PanoramaInput : AbstractInput
     {
-        private IPhotoView photoView;
-
-        private void Start() => 
-            photoView = GetComponent<IPhotoView>();
-
-        protected override void OnUpdate() => 
-            photoView.ApplyInput(_deltaPosition);
+        protected override void OnUpdate() =>
+            _view.ApplyInput(_deltaPosition);
     }
 }

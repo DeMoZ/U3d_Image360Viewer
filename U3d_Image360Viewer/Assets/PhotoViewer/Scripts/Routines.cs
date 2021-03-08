@@ -6,10 +6,8 @@ namespace PhotoViewer.Scripts
 {
     public class Routines : MonoBehaviour
     {
-        public void StopAllRoutines()
-        {
+        public void StopAllRoutines() => 
             StopAllCoroutines();
-        }
 
         public void LerpFloat(float from, float to, float time, Action<float> callbackOnLerp = null,
             Action callbackOnEnd = null) =>

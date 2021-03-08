@@ -3,19 +3,24 @@ using UnityEngine.EventSystems;
 
 namespace PhotoViewer.Scripts
 {
-    public abstract class ViewerInput : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public abstract class AbstractInput : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
 #if UNITY_IOS || UNITY_ANDROID
         private float _speed = 5;
 #else
         private float _speed = 25;
 #endif
-
-        protected abstract void OnUpdate();
+        
+        [SerializeField] protected AbstractView _view = default;
 
         [SerializeField] protected float _dumping = 3f;
 
         protected Vector2 _deltaPosition = Vector2.zero;
+
+        protected void Start() => 
+            _view.OnShow += Clear;
+
+        protected abstract void OnUpdate();
 
         private void Update()
         {
@@ -38,7 +43,10 @@ namespace PhotoViewer.Scripts
         {
         }
 
-        public void Clear() =>
+        private void Clear() =>
             _deltaPosition = Vector2.zero;
+
+        protected void OnDestroy() => 
+            _view.OnShow += Clear;
     }
 }
