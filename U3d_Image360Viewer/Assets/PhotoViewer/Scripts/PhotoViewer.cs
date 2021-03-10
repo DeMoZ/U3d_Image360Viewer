@@ -1,19 +1,14 @@
-using System;
 using System.Collections.Generic;
-using PhotoViewer.Scripts.Photo;
-using PhotoViewer.Scripts.Gallery;
-using PhotoViewer.Scripts.Panorama;
 using UnityEngine;
 
 namespace PhotoViewer.Scripts
 {
     public class PhotoViewer : MonoBehaviour
     {
-        [SerializeField] private GalleryView _galleryView = default;
-        [SerializeField] private PanoramaView _panoramaView = default;
+        [SerializeField] private Gallery.Gallery _gallery = default;
+        [SerializeField] private Panorama.Panorama _panorama = default;
+        [SerializeField] private Photo.Photo _photo = default;
 
-        [SerializeField] private PhotoView _photoView = default;
-        
         [SerializeField] private GameObject _btnReturn = default;
         [SerializeField] private GameObject _btnPrev = default;
         [SerializeField] private GameObject _btnNext = default;
@@ -26,35 +21,35 @@ namespace PhotoViewer.Scripts
         private void Start() =>
             _btnReturn.SetActive(false);
 
-        public void CloseViewer()
-        {
-            Clear();
-            gameObject.SetActive(false);
-        }
-
         public void AddImageData(ImageData data) =>
             _images.Add(data);
 
         public void AddImageData(List<ImageData> data) =>
             _images.AddRange(data);
 
+        public void CloseViewer()
+        {
+            Clear();
+            gameObject.SetActive(false);
+        }
+
         public void Clear()
         {
             _images.Clear();
 
             _currentImageData = new ImageData();
-            _galleryView.Clear();
-            _panoramaView.Clear();
-            _photoView.Clear();
+            _gallery.Clear();
+            _panorama.Clear();
+            _photo.Clear();
         }
 
         public void Show()
         {
-            if (_galleryView)
+            if (_gallery)
             {
                 EnableGalleryViewState();
-                _galleryView.Init(_images);
-                _galleryView.OnImageSelect += ShowImage;
+                _gallery.Init(_images);
+                _gallery.OnImageSelect += ShowImage;
             }
             else
             {
@@ -88,11 +83,11 @@ namespace PhotoViewer.Scripts
 
         private void EnableGalleryViewState()
         {
-            _panoramaView.gameObject.SetActive(false);
-            _photoView.gameObject.SetActive(false);
+            _panorama.gameObject.SetActive(false);
+            _photo.gameObject.SetActive(false);
             SetActiveButtons(false);
 
-            _galleryView.gameObject.SetActive(true);
+            _gallery.gameObject.SetActive(true);
         }
 
         private void SetActiveButtons(bool active)
@@ -104,7 +99,7 @@ namespace PhotoViewer.Scripts
 
         private void ShowImage(int number)
         {
-            _galleryView.gameObject.SetActive(false);
+            _gallery.gameObject.SetActive(false);
             SetActiveButtons(true);
 
             CurrentPhoto = number;
@@ -117,15 +112,15 @@ namespace PhotoViewer.Scripts
 
             if (IsPhoto(imageData.Sprite))
             {
-                _photoView.gameObject.SetActive(true);
-                _panoramaView.gameObject.SetActive(false);
-                _photoView.Show(imageData);
+                _photo.gameObject.SetActive(true);
+                _panorama.gameObject.SetActive(false);
+                _photo.Show(imageData);
             }
             else
             {
-                _photoView.gameObject.SetActive(false);
-                _panoramaView.gameObject.SetActive(true);
-                _panoramaView.Show(imageData);
+                _photo.gameObject.SetActive(false);
+                _panorama.gameObject.SetActive(true);
+                _panorama.Show(imageData);
             }
         }
 

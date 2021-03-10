@@ -23,7 +23,7 @@ namespace PhotoViewer.Scripts
 
         private void SetZoomSlider(float value)
         {
-            if (_view.GetType() == typeof(PhotoView))
+            if (_view.GetType() == typeof(Photo.Photo))
                 _view.ZoomSlider.value -= value;
             else
                 _view.ZoomSlider.value += value;

@@ -607,9 +607,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4419c6a0c64442f5b4f1c8b98dc9a5e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _galleryView: {fileID: 4024109258434411885}
-  _panoramaView: {fileID: 4158951896867104229}
-  _photoView: {fileID: 6187132651290733224}
+  _gallery: {fileID: 4024109258434411885}
+  _panorama: {fileID: 4158951896867104229}
+  _photo: {fileID: 6187132651290733224}
   _btnReturn: {fileID: 4193080321615660369}
   _btnPrev: {fileID: 2606391359472960952}
   _btnNext: {fileID: 2606391358566567147}

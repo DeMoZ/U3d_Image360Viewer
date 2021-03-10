@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts.Gallery
 {
-    public class GalleryView : MonoBehaviour
+    public class Gallery : MonoBehaviour
     {
         [SerializeField] private Text _name = default;
         [SerializeField] private RectTransform _content = default;

@@ -3,17 +3,14 @@ using UnityEngine.UI;
 
 namespace PhotoViewer.Scripts.Photo
 {
-    public class PhotoView : AbstractView
+    public class Photo : AbstractView
     {
         [SerializeField] private Image _image = null;
         [SerializeField] private Sprite _defaultImage = null;
-
         [SerializeField] private PhotoMap _photoMap = null;
 
         private RectTransform _transform;
-
         private RectTransform _imageTransform;
-
         private Vector2? _defaultImageSize;
 
         private Vector2 ViewerSize

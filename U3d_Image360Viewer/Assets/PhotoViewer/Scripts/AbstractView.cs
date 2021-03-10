@@ -8,21 +8,23 @@ namespace PhotoViewer.Scripts
     public abstract class AbstractView : MonoBehaviour
     {
         [SerializeField] protected Text _name = default;
+        [SerializeField] protected Text _date = default;
         [SerializeField] protected Slider _zoomSlider = default;
         [SerializeField] protected ResetButton _btnReset = default;
-        [SerializeField] protected Text _date = default;
- 
+
         public event Action OnShow;
 
-        protected abstract void Zoom(float value);
-        public abstract void ApplyInput(Vector2 deltaPosition);
-
         protected Action OnChange;
+        
+        private ImageData _currentData;
+
+        public abstract void ApplyInput(Vector2 deltaPosition);
+        protected abstract void Zoom(float value);
+
         protected abstract void ShowMap(bool show);
 
         protected abstract void ShowData(ImageData imageData);
 
-        protected ImageData _currentData;
 
         protected virtual void Awake()
         {
