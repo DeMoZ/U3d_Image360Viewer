@@ -52,8 +52,6 @@ namespace PhotoViewer.Scripts.Photo
 
         protected override void ShowData(ImageData imageData)
         {
-            Clear();
-
             _zoomSlider.onValueChanged.AddListener(Zoom);
             _btnReset.Show(false);
             
@@ -130,10 +128,9 @@ namespace PhotoViewer.Scripts.Photo
                 OnChange?.Invoke();
         }
 
-        public void Clear()
+        public override void Clear()
         {
-            var euler = _imageTransform.rotation.eulerAngles;
-            _imageTransform.rotation = Quaternion.Euler(euler.x, euler.y, 0);
+            _imageTransform.rotation = Quaternion.identity;
             _image.sprite = _defaultImage;
             _photoMap.Clear();
 

@@ -8,14 +8,15 @@ namespace PhotoViewer.Scripts.Panorama
     public class Panorama : AbstractView
     {
         private const float IconAnimateTime = 0.5f;
-        
+
         [SerializeField] private PanoramaRotator _panoramaCameraPrefab = null;
         [SerializeField] private GameObject _panoramaSpherePrefab = null;
         [SerializeField] private PanoramaMap _panoramaMap = null;
         [SerializeField] private Image _icon360 = null;
 
         [Tooltip("When true, the 360 icon will appear in center if view and animate to a default position.")]
-        [SerializeField] private bool _animateIcon360 = true;
+        [SerializeField]
+        private bool _animateIcon360 = true;
 
         public event Action<Vector2> OnRotate;
 
@@ -43,8 +44,6 @@ namespace PhotoViewer.Scripts.Panorama
 
         protected override void ShowData(ImageData imageData)
         {
-            Clear();
-
             _zoomSlider.onValueChanged.AddListener(Zoom);
             _btnReset.Show(false);
 
@@ -54,10 +53,9 @@ namespace PhotoViewer.Scripts.Panorama
                 AnimateIcon360();
         }
 
-        public void Clear()
+        public override void Clear()
         {
-            _name.text = string.Empty;
-            _cameraR.transform.rotation = Quaternion.Euler(Vector3.zero);
+            _cameraR.transform.rotation = Quaternion.identity;
             _panoramaMap.Clear();
 
             _zoomSlider.value = 0.5f;

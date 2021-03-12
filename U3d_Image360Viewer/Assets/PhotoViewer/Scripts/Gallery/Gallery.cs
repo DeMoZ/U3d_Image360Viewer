@@ -16,18 +16,6 @@ namespace PhotoViewer.Scripts.Gallery
 
         private Coroutine _applySizeRoutine;
 
-        public void Clear()
-        {
-            if (_applySizeRoutine != null)
-            {
-                StopCoroutine(_applySizeRoutine);
-                _applySizeRoutine = null;
-            }
-
-            foreach (RectTransform child in _content)
-                Destroy(child.gameObject);
-        }
-
         public void Init(List<ImageData> imageDatas)
         {
             _name.text = Globals.GalleryViewHeader;
@@ -52,6 +40,18 @@ namespace PhotoViewer.Scripts.Gallery
 
                 _applySizeRoutine = StartCoroutine(ApplySize(imageT, taleT, relative));
             }
+        }
+
+        public void Clear()
+        {
+            if (_applySizeRoutine != null)
+            {
+                StopCoroutine(_applySizeRoutine);
+                _applySizeRoutine = null;
+            }
+
+            foreach (RectTransform child in _content)
+                Destroy(child.gameObject);
         }
 
         private void TileClick(int number) =>

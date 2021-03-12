@@ -15,16 +15,15 @@ namespace PhotoViewer.Scripts
         public event Action OnShow;
 
         protected Action OnChange;
-        
+
         private ImageData _currentData;
 
         public abstract void ApplyInput(Vector2 deltaPosition);
+        public abstract void Clear();
+
         protected abstract void Zoom(float value);
-
         protected abstract void ShowMap(bool show);
-
         protected abstract void ShowData(ImageData imageData);
-
 
         protected virtual void Awake()
         {
@@ -32,25 +31,30 @@ namespace PhotoViewer.Scripts
             OnChange += () => { _btnReset.Show(true); };
         }
 
-        public Slider ZoomSlider  { 
-            get=>_zoomSlider;
-            set=>_zoomSlider=value; 
+        public Slider ZoomSlider
+        {
+            get => _zoomSlider;
+            set => _zoomSlider = value;
         }
 
         public void Show(ImageData imageData)
         {
+            Clear();
             _currentData = imageData;
             _name.text = imageData.Name;
             _date.text = imageData.Date;
             ShowData(imageData);
             ShowMap(false);
             _btnReset.Show(false);
-            
+
             OnShow?.Invoke();
         }
 
-        public void Reset() => 
+        public void Reset()
+        {
+            Clear();
             Show(_currentData);
+        }
 
         protected void ResetZoom(float value = 0)
         {
