@@ -13,27 +13,27 @@ MonoBehaviour:
   m_Name: ImageLibrary
   m_EditorClassIdentifier: 
   ImageDatas:
-  - Sprite: {fileID: 21300000, guid: 0d4899e8b1885c64a8a53853d6265d43, type: 3}
+  - Sprite: {fileID: 21300000, guid: b6b172bac861d674b9783e024f8d365c, type: 3}
     Name: The Water Tower
     Date: 2020/08/18
-  - Sprite: {fileID: 21300000, guid: 5965fbd3f73e08e46964a2a9671cc1b6, type: 3}
+  - Sprite: {fileID: 21300000, guid: 0204f1a25bd8572428a95dc65ca151a1, type: 3}
     Name: The Beach
     Date: 2020/08/01
-  - Sprite: {fileID: 21300000, guid: 02bf2be8255a4a84dbff7d76adabb1dd, type: 3}
+  - Sprite: {fileID: 21300000, guid: 2e5f7ff3efef89a4ea476f4d4f64ec5d, type: 3}
     Name: View From Water Tower
     Date: 2020/08/12
-  - Sprite: {fileID: 21300000, guid: 0310f4fec75a8244fad8ed8d30797395, type: 3}
-    Name: The Brige Night
+  - Sprite: {fileID: 21300000, guid: b15f92b2bd8a2314cade4000ebc3fca4, type: 3}
+    Name: Chile
     Date: 2020/08/02
-  - Sprite: {fileID: 21300000, guid: 4e5279f2878b6c148921be59ac19b23a, type: 3}
+  - Sprite: {fileID: 21300000, guid: dfecbc4aa6e3d72419d7aacb6856461d, type: 3}
     Name: The Tree
     Date: 2020/08/11
-  - Sprite: {fileID: 21300000, guid: 256eb08f5214bee43befbf23fdf760e8, type: 3}
-    Name: The Brigje Day
+  - Sprite: {fileID: 21300000, guid: b32274d56ab7ab44387bad7d7705fc67, type: 3}
+    Name: The Manson Brigje
     Date: 2020/08/03
-  - Sprite: {fileID: 21300000, guid: d9db49aa7c0f3cf44a8ec5f980e65158, type: 3}
+  - Sprite: {fileID: 21300000, guid: c96ec4ffd2b62ca4cb71afabbc059c01, type: 3}
     Name: The Beach
     Date: 2020/08/09
-  - Sprite: {fileID: 21300000, guid: 68bd7041a6d69e948b1e04ad711d5730, type: 3}
+  - Sprite: {fileID: 21300000, guid: 46cad366b86269b40b4252c01008b4c6, type: 3}
     Name: Sun Francisco
     Date: 2020/08/10
